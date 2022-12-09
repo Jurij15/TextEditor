@@ -1,0 +1,68 @@
+﻿<ui:UiWindow x:Class="TextEditor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TextEditor"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="658" Width="1130"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             
+       Background="{DynamicResource ApplicationBackgroundBrush}"
+             ExtendsContentIntoTitleBar="True"
+             WindowStartupLocation="CenterScreen"
+             WindowCornerPreference="Round">
+    <DockPanel x:Name="DPanel">
+        <ui:TitleBar x:Name="MWindowTitleBar" DockPanel.Dock="Top"
+                     Title="TextEdit"
+                     ForceShutdown="False"
+                     ShowClose="True"
+                     ShowMaximize="True"
+                     ShowMinimize="True"
+                     UseSnapLayout="True"
+                     />
+        <Menu x:Name="MainMenu" DockPanel.Dock="Top" Height="51">
+            <ui:MenuItem Header="File">
+                <MenuItem Header="New" x:Name="NewMainMenuBtn" Click="NewMainMenuBtn_Click"/>
+                <MenuItem Header="Open" x:Name="OpenMainMenuBtn" Click="OpenMainMenuBtn_Click"/>
+                <MenuItem Header="Save" x:Name="SaveMainMenuBtn" Click="SaveMainMenuBtn_Click"/>
+                <Separator/>
+                <MenuItem Header="File Templates" x:Name="FileTemplatesMainMenuBtn" Click="FileTemplatesMainMenuBtn_Click"/>
+                <Separator/>
+                <MenuItem Header="Preferences" x:Name="PreferencesMainMenuBtn" Click="PreferencesMainMenuBtn_Click"/>
+                <MenuItem Header="Instance Manager" x:Name="InstanceManagerMainMenuBtn" Click="InstanceManagerMainMenuBtn_Click"/>
+                <MenuItem Header="Statistics" x:Name="StatisticsMainMenuBtn" Click="StatisticsMainMenuBtn_Click"/>
+                <Separator/>
+                <MenuItem Header="Exit" x:Name="ExitMainMenuBtn" Click="ExitMainMenuBtn_Click"/>
+            </ui:MenuItem>
+            <ui:MenuItem Header="Edit">
+                <ui:MenuItem Header="Undo"/>
+                <ui:MenuItem Header="Redo"/>
+                <ui:MenuItem Header="Cut"/>
+                <ui:MenuItem Header="Copy"/>
+                <ui:MenuItem Header="Paste"/>
+                <ui:MenuItem Header="SelectAll"/>
+                <ui:MenuItem Header="Date/Time"/>
+            </ui:MenuItem>
+            <ui:MenuItem Header="Tabs">
+                <MenuItem Header="Add Tab"/>
+                <MenuItem Header="Close Tab"/>
+            </ui:MenuItem>
+            <ui:MenuItem Header="Format">
+                <MenuItem Header="Font"/>
+                <MenuItem Header="Color"/>
+            </ui:MenuItem>
+            <ui:MenuItem Header="About">
+                <MenuItem Header="About TextEditor"/>
+            </ui:MenuItem>
+            <Button Content="TimeHere" HorizontalAlignment="Center" FontSize="12" Height="37"/>
+            <ui:Button Content="" Icon="DarkTheme24" x:Name="ThemeMainMenuBtn" Click="ThemeMainMenuBtn_Click" HorizontalAlignment="Center" FontSize="12" Height="37"/>
+        </Menu>
+        <Separator DockPanel.Dock="Top"/>
+        <TabControl x:Name="ControlTabs" DockPanel.Dock="Top">
+            <TabItem Header="DefaultTab">
+                <RichTextBox x:Name="TextBox"/>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</ui:UiWindow>
