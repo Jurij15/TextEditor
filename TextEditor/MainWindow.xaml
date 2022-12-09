@@ -8,7 +8,7 @@
         Title="MainWindow" Height="658" Width="1130"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              
-       Background="{DynamicResource ApplicationBackgroundBrush}"
+       Background="Transparent"
              ExtendsContentIntoTitleBar="True"
              WindowStartupLocation="CenterScreen"
              WindowCornerPreference="Round">
@@ -22,7 +22,7 @@
                      UseSnapLayout="True"
                      />
         <Menu x:Name="MainMenu" DockPanel.Dock="Top" Height="51">
-            <ui:MenuItem Header="File">
+            <ui:MenuItem SymbolIcon="DocumentSplitHint24" Header="File">
                 <MenuItem Header="New" x:Name="NewMainMenuBtn" Click="NewMainMenuBtn_Click"/>
                 <MenuItem Header="Open" x:Name="OpenMainMenuBtn" Click="OpenMainMenuBtn_Click"/>
                 <MenuItem Header="Save" x:Name="SaveMainMenuBtn" Click="SaveMainMenuBtn_Click"/>
@@ -35,7 +35,7 @@
                 <Separator/>
                 <MenuItem Header="Exit" x:Name="ExitMainMenuBtn" Click="ExitMainMenuBtn_Click"/>
             </ui:MenuItem>
-            <ui:MenuItem Header="Edit">
+            <ui:MenuItem SymbolIcon="ScanText24" Header="Edit">
                 <ui:MenuItem Header="Undo"/>
                 <ui:MenuItem Header="Redo"/>
                 <ui:MenuItem Header="Cut"/>
@@ -44,11 +44,14 @@
                 <ui:MenuItem Header="SelectAll"/>
                 <ui:MenuItem Header="Date/Time"/>
             </ui:MenuItem>
-            <ui:MenuItem Header="Tabs">
-                <MenuItem Header="Add Tab"/>
-                <MenuItem Header="Close Tab"/>
+            <ui:MenuItem Header="Style" SymbolIcon="StyleGuide24">
+                <ui:MenuItem Header="Bold" SymbolIcon="TextBold24"/>
             </ui:MenuItem>
-            <ui:MenuItem Header="Format">
+            <ui:MenuItem SymbolIcon="TableAdd24" Header="Tabs">
+                <MenuItem Header="Add Tab" x:Name="AddTabBtn" Click="AddTabBtn_Click"/>
+                <MenuItem Header="Close Tab" x:Name="CloseTabBtn" Click="CloseTabBtn_Click"/>
+            </ui:MenuItem>
+            <ui:MenuItem Header="Format" SymbolIcon="TextNumberFormat24">
                 <MenuItem Header="Font"/>
                 <MenuItem Header="Color"/>
             </ui:MenuItem>
@@ -58,6 +61,15 @@
             <Button Content="TimeHere" HorizontalAlignment="Center" FontSize="12" Height="37"/>
             <ui:Button Content="" Icon="DarkTheme24" x:Name="ThemeMainMenuBtn" Click="ThemeMainMenuBtn_Click" HorizontalAlignment="Center" FontSize="12" Height="37"/>
         </Menu>
+        <ToolBarTray x:Name="TBTray" DockPanel.Dock="Top" IsLocked="True">
+            <ToolBar IsOverflowOpen="False">
+                <ui:Button Icon="New20" Content="Open"/>
+                <ui:Button Icon="Save20" Content="Save"/>
+                <Separator/>
+                <ui:Button Icon="TextBold20" Content="Bold"/>
+                <ui:Button Icon="TextItalic20" Content="Italic"/>
+            </ToolBar>
+        </ToolBarTray>
         <Separator DockPanel.Dock="Top"/>
         <TabControl x:Name="ControlTabs" DockPanel.Dock="Top">
             <TabItem Header="DefaultTab">
