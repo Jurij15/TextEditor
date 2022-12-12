@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TextEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="658" Width="1130"
+        Title="MainWindow" Height="691" Width="1205"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              
        Background="Transparent"
@@ -24,6 +24,7 @@
         <Menu x:Name="MainMenu" DockPanel.Dock="Top" Height="51">
             <ui:MenuItem SymbolIcon="DocumentSplitHint24" Header="File">
                 <MenuItem Header="New" x:Name="NewMainMenuBtn" Click="NewMainMenuBtn_Click"/>
+                <MenuItem Header="New Window" x:Name="NewWindowMainMenuBtn" Click="NewWindowMainMenuBtn_Click"/>
                 <MenuItem Header="Open" x:Name="OpenMainMenuBtn" Click="OpenMainMenuBtn_Click"/>
                 <MenuItem Header="Save" x:Name="SaveMainMenuBtn" Click="SaveMainMenuBtn_Click"/>
                 <Separator/>
@@ -56,20 +57,25 @@
                 <MenuItem Header="Color"/>
             </ui:MenuItem>
             <ui:MenuItem Header="About">
-                <MenuItem Header="About TextEditor"/>
+                <MenuItem Header="About TextEditor" x:Name="AboutMenuBtn" Click="AboutMenuBtn_Click"/>
             </ui:MenuItem>
             <Button Content="TimeHere" HorizontalAlignment="Center" FontSize="12" Height="37"/>
             <ui:Button Content="" Icon="DarkTheme24" x:Name="ThemeMainMenuBtn" Click="ThemeMainMenuBtn_Click" HorizontalAlignment="Center" FontSize="12" Height="37"/>
         </Menu>
-        <ToolBarTray x:Name="TBTray" DockPanel.Dock="Top" IsLocked="True">
-            <ToolBar IsOverflowOpen="False">
-                <ui:Button Icon="New20" Content="Open"/>
-                <ui:Button Icon="Save20" Content="Save"/>
-                <Separator/>
-                <ui:Button Icon="TextBold20" Content="Bold"/>
-                <ui:Button Icon="TextItalic20" Content="Italic"/>
-            </ToolBar>
-        </ToolBarTray>
+        <Separator DockPanel.Dock="Top"/>
+        <Menu x:Name="QuickBarTray" DockPanel.Dock="Top">
+            <ui:MenuItem SymbolIcon="New20" Header="New"/>
+            <ui:MenuItem SymbolIcon="Open20" Header="Open"/>
+            <Separator/>
+            <ui:MenuItem SymbolIcon="TextBold20"/>
+            <ui:MenuItem SymbolIcon="TextItalic20"/>
+            <ui:MenuItem SymbolIcon="TextUnderline20"/>
+            <Separator/>
+            <ui:MenuItem SymbolIcon="ArrowUndo20"/>
+            <ui:MenuItem SymbolIcon="ArrowRedo20"/>
+            <Separator/>
+            <ui:MenuItem SymbolIcon="TextFont20"/>
+        </Menu>
         <Separator DockPanel.Dock="Top"/>
         <TabControl x:Name="ControlTabs" DockPanel.Dock="Top">
             <TabItem Header="DefaultTab">

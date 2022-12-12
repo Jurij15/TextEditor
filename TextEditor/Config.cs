@@ -9,5 +9,8 @@ namespace TextEditor
     public class Config
     {
         public static int TabsCount;
+
+        public static string Theme = "dark"; //dark thene
+        public static bool ShowtimeInMenuBar = true;
     }
 }

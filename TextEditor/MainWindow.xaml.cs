@@ -54,11 +54,17 @@ namespace TextEditor
 
             TextBox.Name = "TextBoxDefault";
             RegisterName("TextBoxDefault", TextBox);
+
+            this.Title = "TextEditor";
         }
 
         private void ThemeMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             _themeService.SetTheme(_themeService.GetTheme() == Wpf.Ui.Appearance.ThemeType.Dark ? Wpf.Ui.Appearance.ThemeType.Light : Wpf.Ui.Appearance.ThemeType.Dark);
+
+            TextRange rangeOfText1 = new TextRange(GetCurrentlySelectedTabTextBox().Document.ContentEnd, GetCurrentlySelectedTabTextBox().Document.ContentEnd);
+            rangeOfText1.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black);
+
         }
 
         private void NewMainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -99,7 +105,6 @@ namespace TextEditor
 
         private void StatisticsMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-
         }
 
         #region Tabs
@@ -195,5 +200,18 @@ namespace TextEditor
             //bFoundNewIndex = false; //for later
         }
         #endregion
+
+        private void AboutMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AboutWindow window = new AboutWindow();
+            window.Show();
+        }
+
+        private void NewWindowMainMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MainWindow window = new MainWindow();
+            window.Owner = this;
+            window.Show();
+        }
     }
 }

@@ -1,0 +1,26 @@
+﻿<ui:UiWindow x:Class="TextEditor.Windows.AboutWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TextEditor.Windows"
+        mc:Ignorable="d"
+        Title="AboutWindow" Height="139" Width="202"
+                             xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             ResizeMode="NoResize"
+             
+       Background="{DynamicResource ApplicationBackgroundBrush}"
+             ExtendsContentIntoTitleBar="True"
+             WindowStartupLocation="CenterScreen"
+             WindowCornerPreference="Round">
+    <DockPanel x:Name="DPanel">
+        <ui:TitleBar x:Name="AboutTitleBar" DockPanel.Dock="Top"
+                     Title="About TextEditor"
+                     ForceShutdown="False"
+                     ShowClose="True"
+                     ShowMaximize="False"
+                     ShowMinimize="False"
+                     UseSnapLayout="False"
+                     />
+    </DockPanel>
+</ui:UiWindow>
