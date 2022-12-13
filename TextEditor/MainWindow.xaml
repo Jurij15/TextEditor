@@ -37,13 +37,13 @@
                 <MenuItem Header="Exit" x:Name="ExitMainMenuBtn" Click="ExitMainMenuBtn_Click"/>
             </ui:MenuItem>
             <ui:MenuItem SymbolIcon="ScanText24" Header="Edit">
-                <ui:MenuItem Header="Undo"/>
-                <ui:MenuItem Header="Redo"/>
-                <ui:MenuItem Header="Cut"/>
-                <ui:MenuItem Header="Copy"/>
-                <ui:MenuItem Header="Paste"/>
-                <ui:MenuItem Header="SelectAll"/>
-                <ui:MenuItem Header="Date/Time"/>
+                <ui:MenuItem Header="Undo" x:Name="UndoMenuBtn" Click="UndoMenuBtn_Click"/>
+                <ui:MenuItem Header="Redo" x:Name="RedoMenuBtn" Click="RedoMenuBtn_Click"/>
+                <ui:MenuItem Header="Cut" x:Name="CutMenuBtn" Click="CutMenuBtn_Click"/>
+                <ui:MenuItem Header="Copy" x:Name="CopyMenuBtn" Click="CopyMenuBtn_Click"/>
+                <ui:MenuItem Header="Paste" x:Name="PasteMenuBtn" Click="PasteMenuBtn_Click"/>
+                <ui:MenuItem Header="SelectAll" x:Name="SelectAllMenuBtn" Click="SelectAllMenuBtn_Click"/>
+                <ui:MenuItem Header="Date/Time" x:Name="DateTimeMenuBTn" Click="DateTimeMenuBTn_Click"/>
             </ui:MenuItem>
             <ui:MenuItem Header="Style" SymbolIcon="StyleGuide24">
                 <ui:MenuItem Header="Bold" SymbolIcon="TextBold24"/>
@@ -53,8 +53,8 @@
                 <MenuItem Header="Close Tab" x:Name="CloseTabBtn" Click="CloseTabBtn_Click"/>
             </ui:MenuItem>
             <ui:MenuItem Header="Format" SymbolIcon="TextNumberFormat24">
-                <MenuItem Header="Font"/>
-                <MenuItem Header="Color"/>
+                <MenuItem Header="Font" x:Name="FontMenuBtn" Click="FontMenuBtn_Click"/>
+                <MenuItem Header="Color" x:Name="ColorMenuBtn" Click="ColorMenuBtn_Click"/>
             </ui:MenuItem>
             <ui:MenuItem Header="About">
                 <MenuItem Header="About TextEditor" x:Name="AboutMenuBtn" Click="AboutMenuBtn_Click"/>

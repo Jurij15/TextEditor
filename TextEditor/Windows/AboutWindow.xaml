@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TextEditor.Windows"
         mc:Ignorable="d"
-        Title="AboutWindow" Height="139" Width="202"
+        Title="AboutWindow" Height="242" Width="297"
                              xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
              ResizeMode="NoResize"
              

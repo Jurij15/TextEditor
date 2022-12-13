@@ -69,7 +69,7 @@ namespace TextEditor
 
         private void NewMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            GetCurrentlySelectedTabTextBox().Document.Blocks.Clear();
         }
 
         private void OpenMainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -105,6 +105,7 @@ namespace TextEditor
 
         private void StatisticsMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+
         }
 
         #region Tabs
@@ -143,6 +144,7 @@ namespace TextEditor
 
         private void AddTabBtn_Click(object sender, RoutedEventArgs e)
         {
+            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
             Config.TabsCount++;
             TabItem tab = new TabItem();
             tab.Header = "New Tab";
@@ -212,6 +214,51 @@ namespace TextEditor
             MainWindow window = new MainWindow();
             window.Owner = this;
             window.Show();
+        }
+
+        private void UndoMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            GetCurrentlySelectedTabTextBox().Undo();
+        }
+
+        private void RedoMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            GetCurrentlySelectedTabTextBox().Redo();
+        }
+
+        private void CutMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            GetCurrentlySelectedTabTextBox().Cut();
+        }
+
+        private void CopyMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            GetCurrentlySelectedTabTextBox().Copy();
+        }
+
+        private void PasteMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            GetCurrentlySelectedTabTextBox().Paste();
+        }
+
+        private void SelectAllMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            GetCurrentlySelectedTabTextBox().SelectAll();
+        }
+
+        private void DateTimeMenuBTn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void FontMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ColorMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
