@@ -7,6 +7,7 @@
         mc:Ignorable="d"
          xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
         Title="TextEditor Debugger" Height="186" Width="379"
+             Background="Transparent"
              Closing="UiWindow_Closing">
     <Grid>
         <ui:ToggleSwitch x:Name="SpamOpen" Checked="SpamOpen_Checked" Unchecked="SpamOpen_Unchecked"/>

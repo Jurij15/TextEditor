@@ -17,8 +17,11 @@ using Wpf.Ui.Mvvm.Services;
 using TextEditor.Dialogs;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm;
-using Wpf.Ui.Controls;
 using TextEditor.Windows;
+using System.Reflection;
+using System.Diagnostics.Contracts;
+using Newtonsoft.Json;
+using System.Windows.Media.Media3D;
 
 namespace TextEditor
 {
@@ -50,20 +53,40 @@ namespace TextEditor
 
             _themeService = ts;
             Wpf.Ui.Appearance.Accent.ApplySystemAccent();
-            _themeService.SetTheme(Wpf.Ui.Appearance.ThemeType.Dark);
+            //_themeService.SetTheme(Wpf.Ui.Appearance.ThemeType.Dark);
 
-            TextBox.Name = "TextBoxDefault";
-            RegisterName("TextBoxDefault", TextBox);
+            DefTextBox.Name = "TextBoxDefault";
+            RegisterName("TextBoxDefault", DefTextBox);
 
             this.Title = "TextEditor";
+            //ControlTabs.Items.Remove(DefaultTab);
+            DefaultTab.Visibility = Visibility.Collapsed;
+            DefTextBox.Visibility= Visibility.Collapsed;
         }
 
         private void ThemeMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             _themeService.SetTheme(_themeService.GetTheme() == Wpf.Ui.Appearance.ThemeType.Dark ? Wpf.Ui.Appearance.ThemeType.Light : Wpf.Ui.Appearance.ThemeType.Dark);
 
-            TextRange rangeOfText1 = new TextRange(GetCurrentlySelectedTabTextBox().Document.ContentEnd, GetCurrentlySelectedTabTextBox().Document.ContentEnd);
-            rangeOfText1.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black);
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
+            else
+            {
+                /*
+                TextRange rangeOfText1 = new TextRange(GetCurrentlySelectedTabTextBox().Document.ContentEnd, GetCurrentlySelectedTabTextBox().Document.ContentEnd);
+                rangeOfText1.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black);
+                */
+                if (_themeService.GetTheme() == Wpf.Ui.Appearance.ThemeType.Light)
+                {
+                    GetCurrentlySelectedTabTextBox().Foreground = Brushes.Black;
+                }
+                else if (_themeService.GetTheme() == Wpf.Ui.Appearance.ThemeType.Dark)
+                {
+                    GetCurrentlySelectedTabTextBox().Foreground = Brushes.White;
+                }
+            }
 
         }
 
@@ -95,7 +118,7 @@ namespace TextEditor
 
         private void InstanceManagerMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            
+
         }
 
         private void ExitMainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -109,40 +132,44 @@ namespace TextEditor
         }
 
         #region Tabs
-        public TabItem GetCurrentlySelectedTab()
+        public TabItem GetCurrentlySelectedTabOLD()
         {
             return (TabItem)ControlTabs.SelectedItem;
         }
-        public int GetSelectedTabIndex()
+        public int GetSelectedTabIndexOLD()
         {
             return ControlTabs.SelectedIndex;
         }
-        public RichTextBox GetCurrentlySelectedTabTextBox()
+        public RichTextBox GetCurrentlySelectedTabTextBoxOLD()
         {
             //MessageBox.Show(GetSelectedTabIndex().ToString());
-            if (GetSelectedTabIndex() == 0)
+            if (GetSelectedTabIndexOLD() == 0)
             {
                 return ((RichTextBox)DPanel.FindName("TextBoxDefault")); //this is the default notepad that is created in normal xaml
             }
-            return ((RichTextBox)DPanel.FindName("TextBox" + GetSelectedTabIndex().ToString()));
+            return ((RichTextBox)DPanel.FindName("TextBox" + GetSelectedTabIndexOLD().ToString()));
         }
         private void CloseTabBtn_Click(object sender, RoutedEventArgs e)
         {
+            RemoveTab();
+        }
+
+        public void RemoveTabOld()
+        {
             //unregister the name before it the tab gets removed and count is decremented (hope this works)
-            if (GetSelectedTabIndex() == 0)
+            if (GetSelectedTabIndexOLD() == 0)
             {
                 //we must not close the only open tab, we can just reset the text in it
                 //MenuNewBtn_Click(sender, e);
             }
             else
             {
-                UnregisterName("TextBox" + GetSelectedTabIndex().ToString());
+                UnregisterName("TextBox" + GetSelectedTabIndexOLD().ToString());
                 ControlTabs.Items.Remove(GetCurrentlySelectedTab());
                 Config.TabsCount--;
             }
         }
-
-        private void AddTabBtn_Click(object sender, RoutedEventArgs e)
+        public void AddNewTabOLD()
         {
             Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
             Config.TabsCount++;
@@ -153,7 +180,6 @@ namespace TextEditor
             ///Implement a way to check if the tab its trying to add already exists
             ///
             ///something like tghis
-            ///  will fix this for 0.4
             /*
             int newindex = 0;
 
@@ -200,6 +226,69 @@ namespace TextEditor
             //ControlTabs.SelectedItem = tab;
             Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
             //bFoundNewIndex = false; //for later
+        }
+
+        private void AddTabBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewTab();
+        }
+        #endregion
+
+        #region NewTabs
+        //Some code here is recycled from the old Tabs
+        public TabItem GetCurrentlySelectedTab()
+        {
+            return (TabItem)ControlTabs.SelectedItem;
+        }
+        public int GetSelectedTabIndex()
+        {
+            return ControlTabs.SelectedIndex;
+        }
+        public string GetCurrentlySelectedTabName()
+        {
+            return GetCurrentlySelectedTab().Name;
+        }
+        public string GetCurrentlySelectedTabGuid()
+        {
+            //in short, this just removes the "TAB" at the start of the name, and returns the guid
+            string CurrentTabName = GetCurrentlySelectedTabName();
+            return CurrentTabName.Remove(0,3);
+        }
+        public RichTextBox GetCurrentlySelectedTabTextBox()
+        {
+            //MessageBox.Show(GetCurrentlySelectedTextBoxName());
+            return (RichTextBox)DPanel.FindName("TextBox" + GetCurrentlySelectedTabGuid());
+        }
+        public void AddNewTab()
+        {
+            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+            Config.TabsCount++;
+            TabItem tab = new TabItem();
+            tab.Header = "New Tab";
+
+            var guid = Guid.NewGuid().ToString();
+            string name = guid.Replace("-", "_");
+            tab.Name ="TAB"+ name;
+            RichTextBox rtextbox = new RichTextBox();
+            rtextbox.Name = "TextBox" + name;
+
+            rtextbox.Foreground = Brushes.White;
+            rtextbox.FontWeight = FontWeights.Regular;
+            rtextbox.CaretBrush= Brushes.White;
+             
+            //rtextbox.Background = Brushes.DimGray;
+            //MessageBox.Show(guid);
+
+            RegisterName(rtextbox.Name, rtextbox);
+            tab.Content = rtextbox;
+            ControlTabs.Items.Insert(1, tab);
+            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+        }
+        public void RemoveTab()
+        {
+            Config.TabsCount--;
+            UnregisterName("TextBox" + GetCurrentlySelectedTabGuid());
+            ControlTabs.Items.Remove(GetCurrentlySelectedTab());
         }
         #endregion
 
@@ -253,12 +342,23 @@ namespace TextEditor
 
         private void FontMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            System.Windows.Forms.FontDialog dlg = new System.Windows.Forms.FontDialog();
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                GetCurrentlySelectedTabTextBox().FontFamily = new FontFamily(dlg.Font.Name);
+                GetCurrentlySelectedTabTextBox().FontSize = dlg.Font.Size * 98.0 / 72.0;
+                GetCurrentlySelectedTabTextBox().FontWeight = dlg.Font.Bold ? FontWeights.Bold : FontWeights.Regular;
+                GetCurrentlySelectedTabTextBox().FontStyle = dlg.Font.Italic ? FontStyles.Italic : FontStyles.Normal;
+            }
         }
 
         private void ColorMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            System.Windows.Forms.ColorDialog dlg = new System.Windows.Forms.ColorDialog();
+            if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                GetCurrentlySelectedTabTextBox().Foreground = new SolidColorBrush(Color.FromArgb(dlg.Color.A, dlg.Color.R, dlg.Color.G, dlg.Color.B));
+            }
         }
     }
 }

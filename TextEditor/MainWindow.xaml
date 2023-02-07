@@ -78,8 +78,8 @@
         </Menu>
         <Separator DockPanel.Dock="Top"/>
         <TabControl x:Name="ControlTabs" DockPanel.Dock="Top">
-            <TabItem Header="DefaultTab">
-                <RichTextBox x:Name="TextBox"/>
+            <TabItem Header="DefaultTab" x:Name="DefaultTab">
+                <RichTextBox x:Name="DefTextBox"/>
             </TabItem>
         </TabControl>
     </DockPanel>

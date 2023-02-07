@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -65,6 +66,18 @@ namespace TextEditor.Debugger
         private void UiWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Environment.Exit(0);
+        }
+
+        private void CloseAlllBTn_Click(object sender, RoutedEventArgs e)
+        {
+            var Processes = Process.GetProcesses();
+            foreach (var process in Processes)
+            {
+                if (process.ProcessName == "TextEdit")
+                {
+                    process.Kill();
+                }
+            }
         }
     }
 }
