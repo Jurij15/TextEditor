@@ -17,11 +17,14 @@ using Wpf.Ui.Mvvm.Services;
 using TextEditor.Dialogs;
 using Wpf.Ui.Controls.Interfaces;
 using Wpf.Ui.Mvvm;
-using TextEditor.Windows;
+using TextEditor.Pages;
 using System.Reflection;
 using System.Diagnostics.Contracts;
 using Newtonsoft.Json;
 using System.Windows.Media.Media3D;
+using System.IO;
+using TextEditor.Enums;
+using Wpf.Ui.Controls;
 
 namespace TextEditor
 {
@@ -41,19 +44,13 @@ namespace TextEditor
             public bool PrimaryButtonBlue;
 
         }
-        private readonly IThemeService _themeService;
-
-        //IDialogControl dialogControl, IDialogService dialogService, ISnackbarControl snackbarControl, ISnackbarService snackbarService
 
         public MainWindow()
         {
-            ThemeService ts = new ThemeService();
+            Globals.TS = new ThemeService();
 
             InitializeComponent();
-
-            _themeService = ts;
-            Wpf.Ui.Appearance.Accent.ApplySystemAccent();
-            //_themeService.SetTheme(Wpf.Ui.Appearance.ThemeType.Dark);
+            Globals.TS.SetSystemAccent();
 
             DefTextBox.Name = "TextBoxDefault";
             RegisterName("TextBoxDefault", DefTextBox);
@@ -66,7 +63,7 @@ namespace TextEditor
 
         private void ThemeMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            _themeService.SetTheme(_themeService.GetTheme() == Wpf.Ui.Appearance.ThemeType.Dark ? Wpf.Ui.Appearance.ThemeType.Light : Wpf.Ui.Appearance.ThemeType.Dark);
+            Globals.TS.SetTheme(Globals.TS.GetTheme() == Wpf.Ui.Appearance.ThemeType.Dark ? Wpf.Ui.Appearance.ThemeType.Light : Wpf.Ui.Appearance.ThemeType.Dark);
 
             if (GetCurrentlySelectedTabTextBox() == null)
             {
@@ -78,11 +75,11 @@ namespace TextEditor
                 TextRange rangeOfText1 = new TextRange(GetCurrentlySelectedTabTextBox().Document.ContentEnd, GetCurrentlySelectedTabTextBox().Document.ContentEnd);
                 rangeOfText1.ApplyPropertyValue(TextElement.ForegroundProperty, Brushes.Black);
                 */
-                if (_themeService.GetTheme() == Wpf.Ui.Appearance.ThemeType.Light)
+                if (Globals.TS.GetTheme() == Wpf.Ui.Appearance.ThemeType.Light)
                 {
                     GetCurrentlySelectedTabTextBox().Foreground = Brushes.Black;
                 }
-                else if (_themeService.GetTheme() == Wpf.Ui.Appearance.ThemeType.Dark)
+                else if (Globals.TS.GetTheme() == Wpf.Ui.Appearance.ThemeType.Dark)
                 {
                     GetCurrentlySelectedTabTextBox().Foreground = Brushes.White;
                 }
@@ -97,23 +94,46 @@ namespace TextEditor
 
         private void OpenMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            openFileDialog.Filter = "txt files (*.txt)|*.txt|All files (*.*)|*.*";
+            openFileDialog.ShowDialog();
+            string docToOpen = openFileDialog.FileName;
+            string tabcontent = openFileDialog.SafeFileName;
+            if (docToOpen == "")
+            {
+                //no doc to open, do nothing
+            }
+            else if (docToOpen != "")
+            {
+                if (GetCurrentlySelectedTabTextBox() == null)
+                {
+                    AddNewTab(); //first add new tab if none of them exist
+                    return;
+                }
+                GetCurrentlySelectedTabTextBox().Document.Blocks.Clear();
+                GetCurrentlySelectedTabTextBox().Document.Blocks.Add(new Paragraph(new System.Windows.Documents.Run(File.ReadAllText(docToOpen))));
+                //AdjustAppTitleByDocumentName(docToOpen);
+                GetCurrentlySelectedTab().Header = tabcontent;
+            }
         }
 
         private void SaveMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void FileTemplatesMainMenuBtn_Click(object sender, RoutedEventArgs e)
-        {
-
+            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
+            saveFileDialog.Filter = "Text File (*.txt)|*.txt|Show All Files (*.*)|*.*";
+            saveFileDialog.FileName = "Untitled";
+            saveFileDialog.Title = "Save As";
+            string range = new TextRange(GetCurrentlySelectedTabTextBox().Document.ContentStart, GetCurrentlySelectedTabTextBox().Document.ContentEnd).Text;
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                File.WriteAllText(saveFileDialog.FileName, range);
+                GetCurrentlySelectedTab().Header = saveFileDialog.SafeFileName;
+            }
         }
 
         private void PreferencesMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            PreferencesWindow window = new PreferencesWindow();
-            window.ShowDialog();
+
         }
 
         private void InstanceManagerMainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -131,7 +151,7 @@ namespace TextEditor
 
         }
 
-        #region Tabs
+        #region OLDTabs
         public TabItem GetCurrentlySelectedTabOLD()
         {
             return (TabItem)ControlTabs.SelectedItem;
@@ -284,24 +304,62 @@ namespace TextEditor
             ControlTabs.Items.Insert(1, tab);
             Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
         }
+        public void AddNewTabWithPage(UiPage Page, PageEnum SelectedPage)
+        {
+            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+            Config.TabsCount++;
+            TabItem tab = new TabItem();
+            //set the tab header based on the page enum
+            switch (SelectedPage) 
+            {
+                case PageEnum.About:
+                    tab.Name = "AboutTab";
+                    tab.Header = "About TextEditor";
+                    break;
+                case PageEnum.Settings:
+                    tab.Name = "SettingsTab";
+                    tab.Header = "Settings";
+                    break;
+            }
+
+            Frame tabFrame = new Frame();
+            tabFrame.Content = Page;
+
+            tab.Content = tabFrame;
+
+            ControlTabs.Items.Insert(1, tab);
+            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+        }
         public void RemoveTab()
         {
-            Config.TabsCount--;
-            UnregisterName("TextBox" + GetCurrentlySelectedTabGuid());
-            ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+            //Check if this is the about tab i might do
+            if (GetCurrentlySelectedTab().Name == "AboutTab")
+            {
+                ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+            }
+            else if (GetCurrentlySelectedTab().Name == "SettingsTab")
+            {
+                ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+            }
+            else
+            {
+                Config.TabsCount--;
+                UnregisterName("TextBox" + GetCurrentlySelectedTabGuid());
+                ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+            }
         }
         #endregion
 
         private void AboutMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            AboutWindow window = new AboutWindow();
-            window.Show();
+            AboutPage page = new AboutPage();
+            AddNewTabWithPage(page, PageEnum.About);
         }
 
         private void NewWindowMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             MainWindow window = new MainWindow();
-            window.Owner = this;
+            window.Owner = null;
             window.Show();
         }
 
@@ -337,7 +395,11 @@ namespace TextEditor
 
         private void DateTimeMenuBTn_Click(object sender, RoutedEventArgs e)
         {
+            string CurrentText = new TextRange(GetCurrentlySelectedTabTextBox().Document.ContentStart, GetCurrentlySelectedTabTextBox().Document.ContentEnd).Text;
+            string NewText = CurrentText + DateTime.Now.ToString();
 
+            GetCurrentlySelectedTabTextBox().Document.Blocks.Clear();
+            GetCurrentlySelectedTabTextBox().Document.Blocks.Add(new Paragraph(new Run(NewText)));
         }
 
         private void FontMenuBtn_Click(object sender, RoutedEventArgs e)

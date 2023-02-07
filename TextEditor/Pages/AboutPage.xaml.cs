@@ -10,16 +10,17 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TextEditor.Windows
+namespace TextEditor.Pages
 {
     /// <summary>
-    /// Interaction logic for AboutWindow.xaml
+    /// Interaction logic for AboutPage.xaml
     /// </summary>
-    public partial class AboutWindow : Wpf.Ui.Controls.UiWindow
+    public partial class AboutPage : Wpf.Ui.Controls.UiPage
     {
-        public AboutWindow()
+        public AboutPage()
         {
             InitializeComponent();
         }

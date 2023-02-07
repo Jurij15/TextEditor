@@ -28,7 +28,11 @@
                 <MenuItem Header="Open" x:Name="OpenMainMenuBtn" Click="OpenMainMenuBtn_Click"/>
                 <MenuItem Header="Save" x:Name="SaveMainMenuBtn" Click="SaveMainMenuBtn_Click"/>
                 <Separator/>
-                <MenuItem Header="File Templates" x:Name="FileTemplatesMainMenuBtn" Click="FileTemplatesMainMenuBtn_Click"/>
+                <MenuItem Header="File Templates" x:Name="FileTemplatesMainMenuBtn">
+                    <MenuItem Header="HTML File"/>
+                    <MenuItem Header="C# File"/>
+                    <MenuItem Header="C++ File"/>
+                </MenuItem>
                 <Separator/>
                 <MenuItem Header="Preferences" x:Name="PreferencesMainMenuBtn" Click="PreferencesMainMenuBtn_Click"/>
                 <MenuItem Header="Instance Manager" x:Name="InstanceManagerMainMenuBtn" Click="InstanceManagerMainMenuBtn_Click"/>
@@ -56,7 +60,7 @@
                 <MenuItem Header="Font" x:Name="FontMenuBtn" Click="FontMenuBtn_Click"/>
                 <MenuItem Header="Color" x:Name="ColorMenuBtn" Click="ColorMenuBtn_Click"/>
             </ui:MenuItem>
-            <ui:MenuItem Header="About">
+            <ui:MenuItem SymbolIcon="ContactCard24" Header="About">
                 <MenuItem Header="About TextEditor" x:Name="AboutMenuBtn" Click="AboutMenuBtn_Click"/>
             </ui:MenuItem>
             <Button Content="TimeHere" HorizontalAlignment="Center" FontSize="12" Height="37"/>
@@ -64,8 +68,8 @@
         </Menu>
         <Separator DockPanel.Dock="Top"/>
         <Menu x:Name="QuickBarTray" DockPanel.Dock="Top">
-            <ui:MenuItem SymbolIcon="New20" Header="New"/>
-            <ui:MenuItem SymbolIcon="Open20" Header="Open"/>
+            <ui:MenuItem SymbolIcon="New20" Header="New" Click="NewMainMenuBtn_Click"/>
+            <ui:MenuItem SymbolIcon="Open20" Header="Open" Click="OpenMainMenuBtn_Click"/>
             <Separator/>
             <ui:MenuItem SymbolIcon="TextBold20"/>
             <ui:MenuItem SymbolIcon="TextItalic20"/>
