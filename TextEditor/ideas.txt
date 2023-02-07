@@ -1,7 +1,10 @@
-﻿search with browser - idk what i meant here
+﻿search with browser - open a web browser and search for that selected word
 find
 
 bald
 italic
 underline
 font - i also forgot what i wanted here
+
+
+Zoom (and display it in the statusbox)

@@ -32,7 +32,7 @@ namespace TextEditor
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Wpf.Ui.Controls.UiWindow
+    public partial class BetterMainWindow : Wpf.Ui.Controls.UiWindow
     {
         public struct SimpleDialogParams
         {
@@ -46,7 +46,7 @@ namespace TextEditor
 
         }
 
-        public MainWindow()
+        public BetterMainWindow()
         {
             Globals.TS = new ThemeService();
 
@@ -59,13 +59,57 @@ namespace TextEditor
             this.Title = "TextEditor";
             //ControlTabs.Items.Remove(DefaultTab);
             DefaultTab.Visibility = Visibility.Collapsed;
-            DefTextBox.Visibility= Visibility.Collapsed;
+            DefTextBox.Visibility = Visibility.Collapsed;
 
             //start the timer
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_tick;
             timer.Start();
+        }
+
+        void UpdateStatus()
+        {
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                LinesAndCharsStatusBarBlock.Text = string.Empty;
+                return;
+            }
+
+            TextRange MyText = new TextRange(
+            GetCurrentlySelectedTabTextBox().Document.ContentStart,
+            GetCurrentlySelectedTabTextBox().Document.ContentEnd
+            );
+
+            string[] splittedLines = MyText.Text.Split(new[] { Environment.NewLine }
+                                          , StringSplitOptions.None); // or StringSplitOptions.RemoveEmptyEntries
+            int Alllines = splittedLines.Length;
+
+            TextPointer caretLineStart = GetCurrentlySelectedTabTextBox().CaretPosition.GetLineStartPosition(0);
+            TextPointer p = GetCurrentlySelectedTabTextBox().Document.ContentStart.GetLineStartPosition(0);
+            int caretLineNumber = 1;
+
+            while (true)
+            {
+                if (caretLineStart.CompareTo(p) < 0)
+                {
+                    break;
+                }
+
+                int result;
+                p = p.GetLineStartPosition(1, out result);
+
+                if (result == 0)
+                {
+                    break;
+                }
+
+                caretLineNumber++;
+            }
+
+            string text = "Line: " + caretLineNumber.ToString() + " Total Lines: " + Alllines.ToString() + " | All Characters: 0" ;
+
+            LinesAndCharsStatusBarBlock.Text = text;
         }
 
         void timer_tick(object sender, EventArgs e)
@@ -76,6 +120,8 @@ namespace TextEditor
 
             //PosTextBox.Text = GetCurrentlySelectedTabTextBox().Document.ContentStart.GetOffsetToPosition(GetCurrentlySelectedTabTextBox().CaretPosition).ToString(); not sure what i did here
             this.Title = GetCurrentlySelectedTab().Header + "-" + Globals.AppTitle;
+
+            UpdateStatus();
         }
 
         private void ThemeMainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -156,7 +202,8 @@ namespace TextEditor
 
         private void PreferencesMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            SettingsPage page = new SettingsPage();
+            AddNewTabWithPage(page, PageEnum.Settings);
         }
 
         private void InstanceManagerMainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -295,7 +342,7 @@ namespace TextEditor
         {
             //in short, this just removes the "TAB" at the start of the name, and returns the guid
             string CurrentTabName = GetCurrentlySelectedTabName();
-            return CurrentTabName.Remove(0,3);
+            return CurrentTabName.Remove(0, 3);
         }
         public RichTextBox GetCurrentlySelectedTabTextBox()
         {
@@ -311,14 +358,14 @@ namespace TextEditor
 
             var guid = Guid.NewGuid().ToString();
             string name = guid.Replace("-", "_");
-            tab.Name ="TAB"+ name;
+            tab.Name = "TAB" + name;
             RichTextBox rtextbox = new RichTextBox();
             rtextbox.Name = "TextBox" + name;
 
             rtextbox.Foreground = Brushes.White;
             rtextbox.FontWeight = FontWeights.Regular;
-            rtextbox.CaretBrush= Brushes.White;
-             
+            rtextbox.CaretBrush = Brushes.White;
+
             //rtextbox.Background = Brushes.DimGray;
             //MessageBox.Show(guid);
 
@@ -333,7 +380,7 @@ namespace TextEditor
             Config.TabsCount++;
             TabItem tab = new TabItem();
             //set the tab header based on the page enum
-            switch (SelectedPage) 
+            switch (SelectedPage)
             {
                 case PageEnum.About:
                     tab.Name = "AboutTab";
@@ -388,32 +435,69 @@ namespace TextEditor
 
         private void UndoMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            GetCurrentlySelectedTabTextBox().Undo();
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
+            else
+            {
+                GetCurrentlySelectedTabTextBox().Undo();
+            }
         }
 
         private void RedoMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            GetCurrentlySelectedTabTextBox().Redo();
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
+            else 
+               GetCurrentlySelectedTabTextBox().Redo();
         }
 
         private void CutMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            GetCurrentlySelectedTabTextBox().Cut();
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
+            else
+            {
+                GetCurrentlySelectedTabTextBox().Cut();
+            }
         }
 
         private void CopyMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            GetCurrentlySelectedTabTextBox().Copy();
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
+            else
+            {
+                GetCurrentlySelectedTabTextBox().Copy();
+            }
         }
 
         private void PasteMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            GetCurrentlySelectedTabTextBox().Paste();
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
+            else
+            {
+                GetCurrentlySelectedTabTextBox().Paste();
+            }
         }
 
         private void SelectAllMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            GetCurrentlySelectedTabTextBox().SelectAll();
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
+            else { GetCurrentlySelectedTabTextBox().SelectAll(); }
         }
 
         private void DateTimeMenuBTn_Click(object sender, RoutedEventArgs e)
@@ -427,6 +511,10 @@ namespace TextEditor
 
         private void FontMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
             System.Windows.Forms.FontDialog dlg = new System.Windows.Forms.FontDialog();
             if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -439,6 +527,10 @@ namespace TextEditor
 
         private void ColorMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
             System.Windows.Forms.ColorDialog dlg = new System.Windows.Forms.ColorDialog();
             if (dlg.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -446,10 +538,58 @@ namespace TextEditor
             }
         }
 
-        private void OpenBetterMainWindow_Click(object sender, RoutedEventArgs e)
+        private void WordWrapCheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            BetterMainWindow window = new BetterMainWindow();
-            window.Show();
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
+            else
+            {
+                //todo
+            }
+        }
+
+        private void WordWrapCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
+            else
+            {
+                //todo
+            }
+        }
+
+        private void BoldMenuButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
+
+            GetCurrentlySelectedTabTextBox().Selection.ApplyPropertyValue(FontWeightProperty, FontWeights.Bold);
+        }
+
+        private void ItalicMenuButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
+
+            GetCurrentlySelectedTabTextBox().Selection.ApplyPropertyValue(FontStyleProperty, FontStyles.Italic);
+        }
+
+        private void UnderlineMenuButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
+
+            GetCurrentlySelectedTabTextBox().Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
         }
     }
 }

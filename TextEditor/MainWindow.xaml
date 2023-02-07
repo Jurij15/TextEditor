@@ -21,10 +21,11 @@
                      ShowMinimize="True"
                      UseSnapLayout="True"
                      />
-        <Menu x:Name="MainMenu" DockPanel.Dock="Top" Height="51">
+        <Menu Background="Transparent" x:Name="MainMenu" DockPanel.Dock="Top" Height="51">
             <ui:MenuItem SymbolIcon="DocumentSplitHint24" Header="File">
                 <MenuItem Header="New" x:Name="NewMainMenuBtn" Click="NewMainMenuBtn_Click"/>
                 <MenuItem Header="New Window" x:Name="NewWindowMainMenuBtn" Click="NewWindowMainMenuBtn_Click"/>
+                <MenuItem Header="Open BetterMainWindow" x:Name="OpenBetterMainWindow" Click="OpenBetterMainWindow_Click"/>
                 <MenuItem Header="Open" x:Name="OpenMainMenuBtn" Click="OpenMainMenuBtn_Click"/>
                 <MenuItem Header="Save" x:Name="SaveMainMenuBtn" Click="SaveMainMenuBtn_Click"/>
                 <Separator/>
@@ -41,30 +42,30 @@
                 <MenuItem Header="Exit" x:Name="ExitMainMenuBtn" Click="ExitMainMenuBtn_Click"/>
             </ui:MenuItem>
             <ui:MenuItem SymbolIcon="ScanText24" Header="Edit">
-                <ui:MenuItem Header="Undo" x:Name="UndoMenuBtn" Click="UndoMenuBtn_Click"/>
-                <ui:MenuItem Header="Redo" x:Name="RedoMenuBtn" Click="RedoMenuBtn_Click"/>
-                <ui:MenuItem Header="Cut" x:Name="CutMenuBtn" Click="CutMenuBtn_Click"/>
-                <ui:MenuItem Header="Copy" x:Name="CopyMenuBtn" Click="CopyMenuBtn_Click"/>
-                <ui:MenuItem Header="Paste" x:Name="PasteMenuBtn" Click="PasteMenuBtn_Click"/>
-                <ui:MenuItem Header="SelectAll" x:Name="SelectAllMenuBtn" Click="SelectAllMenuBtn_Click"/>
-                <ui:MenuItem Header="Date/Time" x:Name="DateTimeMenuBTn" Click="DateTimeMenuBTn_Click"/>
-            </ui:MenuItem>
-            <ui:MenuItem Header="Style" SymbolIcon="StyleGuide24">
-                <ui:MenuItem Header="Bold" SymbolIcon="TextBold24"/>
-            </ui:MenuItem>
-            <ui:MenuItem SymbolIcon="TableAdd24" Header="Tabs">
-                <MenuItem Header="Add Tab" x:Name="AddTabBtn" Click="AddTabBtn_Click"/>
-                <MenuItem Header="Close Tab" x:Name="CloseTabBtn" Click="CloseTabBtn_Click"/>
-            </ui:MenuItem>
-            <ui:MenuItem Header="Format" SymbolIcon="TextNumberFormat24">
-                <MenuItem Header="Font" x:Name="FontMenuBtn" Click="FontMenuBtn_Click"/>
-                <MenuItem Header="Color" x:Name="ColorMenuBtn" Click="ColorMenuBtn_Click"/>
-            </ui:MenuItem>
-            <ui:MenuItem SymbolIcon="ContactCard24" Header="About">
-                <MenuItem Header="About TextEditor" x:Name="AboutMenuBtn" Click="AboutMenuBtn_Click"/>
-            </ui:MenuItem>
-            <Button Content="TimeHere" HorizontalAlignment="Center" FontSize="12" Height="37"/>
-            <ui:Button Content="" Icon="DarkTheme24" x:Name="ThemeMainMenuBtn" Click="ThemeMainMenuBtn_Click" HorizontalAlignment="Center" FontSize="12" Height="37"/>
+                    <ui:MenuItem Header="Undo" x:Name="UndoMenuBtn" Click="UndoMenuBtn_Click"/>
+                    <ui:MenuItem Header="Redo" x:Name="RedoMenuBtn" Click="RedoMenuBtn_Click"/>
+                    <ui:MenuItem Header="Cut" x:Name="CutMenuBtn" Click="CutMenuBtn_Click"/>
+                    <ui:MenuItem Header="Copy" x:Name="CopyMenuBtn" Click="CopyMenuBtn_Click"/>
+                    <ui:MenuItem Header="Paste" x:Name="PasteMenuBtn" Click="PasteMenuBtn_Click"/>
+                    <ui:MenuItem Header="SelectAll" x:Name="SelectAllMenuBtn" Click="SelectAllMenuBtn_Click"/>
+                    <ui:MenuItem Header="Date/Time" x:Name="DateTimeMenuBTn" Click="DateTimeMenuBTn_Click"/>
+                </ui:MenuItem>
+                <ui:MenuItem Header="Style" SymbolIcon="StyleGuide24">
+                    <ui:MenuItem Header="Bold" SymbolIcon="TextBold24"/>
+                </ui:MenuItem>
+                <ui:MenuItem SymbolIcon="TableAdd24" Header="Tabs">
+                    <MenuItem Header="Add Tab" x:Name="AddTabBtn" Click="AddTabBtn_Click"/>
+                    <MenuItem Header="Close Tab" x:Name="CloseTabBtn" Click="CloseTabBtn_Click"/>
+                </ui:MenuItem>
+                <ui:MenuItem Header="Format" SymbolIcon="TextNumberFormat24">
+                    <MenuItem Header="Font" x:Name="FontMenuBtn" Click="FontMenuBtn_Click"/>
+                    <MenuItem Header="Color" x:Name="ColorMenuBtn" Click="ColorMenuBtn_Click"/>
+                </ui:MenuItem>
+                <ui:MenuItem SymbolIcon="ContactCard24" Header="About">
+                    <MenuItem Header="About TextEditor" x:Name="AboutMenuBtn" Click="AboutMenuBtn_Click"/>
+                </ui:MenuItem>
+                <Button Content="TimeHere" x:Name="TimeBtn" HorizontalAlignment="Center" FontSize="12" Height="37"/>
+                <ui:Button Content="" Icon="DarkTheme24" x:Name="ThemeMainMenuBtn" Click="ThemeMainMenuBtn_Click" HorizontalAlignment="Center" FontSize="12" Height="37"/>
         </Menu>
         <Separator DockPanel.Dock="Top"/>
         <Menu x:Name="QuickBarTray" DockPanel.Dock="Top">
@@ -75,10 +76,10 @@
             <ui:MenuItem SymbolIcon="TextItalic20"/>
             <ui:MenuItem SymbolIcon="TextUnderline20"/>
             <Separator/>
-            <ui:MenuItem SymbolIcon="ArrowUndo20"/>
-            <ui:MenuItem SymbolIcon="ArrowRedo20"/>
+            <ui:MenuItem SymbolIcon="ArrowUndo20" Click="UndoMenuBtn_Click"/>
+            <ui:MenuItem SymbolIcon="ArrowRedo20" Click="RedoMenuBtn_Click"/>
             <Separator/>
-            <ui:MenuItem SymbolIcon="TextFont20"/>
+            <ui:MenuItem SymbolIcon="TextFont20" Click="FontMenuBtn_Click"/>
         </Menu>
         <Separator DockPanel.Dock="Top"/>
         <TabControl x:Name="ControlTabs" DockPanel.Dock="Top">

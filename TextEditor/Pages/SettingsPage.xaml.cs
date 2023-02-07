@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,15 +16,13 @@ using System.Windows.Shapes;
 namespace TextEditor.Pages
 {
     /// <summary>
-    /// Interaction logic for AboutPage.xaml
+    /// Interaction logic for SettingsPage.xaml
     /// </summary>
-    public partial class AboutPage : Wpf.Ui.Controls.UiPage
+    public partial class SettingsPage : Wpf.Ui.Controls.UiPage
     {
-        public AboutPage()
+        public SettingsPage()
         {
             InitializeComponent();
-
-            BuildDateBlock.Text = "Build Time: " + Assembly.GetExecutingAssembly().GetLinkerTime().ToString();
         }
     }
 }

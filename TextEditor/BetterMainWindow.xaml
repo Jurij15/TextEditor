@@ -1,0 +1,131 @@
+﻿<ui:UiWindow x:Class="TextEditor.BetterMainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TextEditor"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="720" Width="1280"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+             
+       Background="Transparent"
+             ExtendsContentIntoTitleBar="True"
+             WindowStartupLocation="CenterScreen"
+             WindowCornerPreference="Round">
+    <Grid x:Name="DPanel">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ui:TitleBar Grid.Row="1" x:Name="MWindowTitleBar" DockPanel.Dock="Top"
+                     Title="TextEdit"
+                     ForceShutdown="False"
+                     ShowClose="True"
+                     ShowMaximize="True"
+                     ShowMinimize="True"
+                     UseSnapLayout="True"
+                     />
+        <Menu Background="Transparent" x:Name="MainMenu" Grid.Row="2" Height="51">
+            <ui:MenuItem SymbolIcon="DocumentSplitHint24" Header="File">
+                <MenuItem Header="New" x:Name="NewMainMenuBtn" Click="NewMainMenuBtn_Click"/>
+                <MenuItem Header="New Window" x:Name="NewWindowMainMenuBtn" Click="NewWindowMainMenuBtn_Click"/>
+                <MenuItem Header="Open" x:Name="OpenMainMenuBtn" Click="OpenMainMenuBtn_Click"/>
+                <MenuItem Header="Save" x:Name="SaveMainMenuBtn" Click="SaveMainMenuBtn_Click"/>
+                <Separator/>
+                <MenuItem Header="File Templates" x:Name="FileTemplatesMainMenuBtn">
+                    <MenuItem Header="HTML File"/>
+                    <MenuItem Header="C# File"/>
+                    <MenuItem Header="C++ File"/>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Preferences" x:Name="PreferencesMainMenuBtn" Click="PreferencesMainMenuBtn_Click"/>
+                <MenuItem Header="Instance Manager" x:Name="InstanceManagerMainMenuBtn" Click="InstanceManagerMainMenuBtn_Click"/>
+                <MenuItem Header="Statistics" x:Name="StatisticsMainMenuBtn" Click="StatisticsMainMenuBtn_Click"/>
+                <Separator/>
+                <MenuItem Header="Exit" x:Name="ExitMainMenuBtn" Click="ExitMainMenuBtn_Click"/>
+            </ui:MenuItem>
+            <ui:MenuItem SymbolIcon="ScanText24" Header="Edit">
+                <ui:MenuItem Header="Undo" x:Name="UndoMenuBtn" Click="UndoMenuBtn_Click"/>
+                <ui:MenuItem Header="Redo" x:Name="RedoMenuBtn" Click="RedoMenuBtn_Click"/>
+                <ui:MenuItem Header="Cut" x:Name="CutMenuBtn" Click="CutMenuBtn_Click"/>
+                <ui:MenuItem Header="Copy" x:Name="CopyMenuBtn" Click="CopyMenuBtn_Click"/>
+                <ui:MenuItem Header="Paste" x:Name="PasteMenuBtn" Click="PasteMenuBtn_Click"/>
+                <ui:MenuItem Header="SelectAll" x:Name="SelectAllMenuBtn" Click="SelectAllMenuBtn_Click"/>
+                <ui:MenuItem Header="Date/Time" x:Name="DateTimeMenuBTn" Click="DateTimeMenuBTn_Click"/>
+            </ui:MenuItem>
+            <ui:MenuItem Header="Style" SymbolIcon="StyleGuide24">
+                <ui:MenuItem Header="Bold" SymbolIcon="TextBold24" x:Name="BoldMenuButton" Click="BoldMenuButton_Click"/>
+                <ui:MenuItem Header="Italic" SymbolIcon="TextItalic24" x:Name="ItalicMenuButton" Click="ItalicMenuButton_Click"/>
+                <ui:MenuItem Header="Underline" SymbolIcon="TextUnderline24" x:Name="UnderlineMenuButton" Click="UnderlineMenuButton_Click"/>
+                <CheckBox Content="Word Wrap" x:Name="WordWrapCheckBox" Checked="WordWrapCheckBox_Checked" Unchecked="WordWrapCheckBox_Unchecked"/>
+            </ui:MenuItem>
+            <ui:MenuItem SymbolIcon="TableAdd24" Header="Tabs">
+                <MenuItem Header="Add Tab" x:Name="AddTabBtn" Click="AddTabBtn_Click"/>
+                <MenuItem Header="Close Tab" x:Name="CloseTabBtn" Click="CloseTabBtn_Click"/>
+            </ui:MenuItem>
+            <ui:MenuItem Header="Format" SymbolIcon="TextNumberFormat24">
+                <MenuItem Header="Font" x:Name="FontMenuBtn" Click="FontMenuBtn_Click"/>
+                <MenuItem Header="Color" x:Name="ColorMenuBtn" Click="ColorMenuBtn_Click"/>
+            </ui:MenuItem>
+            <ui:MenuItem SymbolIcon="ContactCard24" Header="About">
+                <MenuItem Header="About TextEditor" x:Name="AboutMenuBtn" Click="AboutMenuBtn_Click"/>
+            </ui:MenuItem>
+            <Button Content="TimeHere" x:Name="TimeBtn" HorizontalAlignment="Center" FontSize="12" Height="37"/>
+            <ui:Button Content="" Icon="DarkTheme24" x:Name="ThemeMainMenuBtn" Click="ThemeMainMenuBtn_Click" HorizontalAlignment="Center" FontSize="12" Height="37"/>
+        </Menu>
+        <Separator Grid.Row="3"/>
+        <Menu x:Name="QuickBarTray" Grid.Row="4">
+            <ui:MenuItem SymbolIcon="New20" Header="New" Click="NewMainMenuBtn_Click"/>
+            <ui:MenuItem SymbolIcon="Open20" Header="Open" Click="OpenMainMenuBtn_Click"/>
+            <Separator/>
+            <ui:MenuItem SymbolIcon="TextBold20" Click="BoldMenuButton_Click"/>
+            <ui:MenuItem SymbolIcon="TextItalic20" Click="ItalicMenuButton_Click"/>
+            <ui:MenuItem SymbolIcon="TextUnderline20" Click="UnderlineMenuButton_Click"/>
+            <Separator/>
+            <ui:MenuItem SymbolIcon="ArrowUndo20" Click="UndoMenuBtn_Click"/>
+            <ui:MenuItem SymbolIcon="ArrowRedo20" Click="RedoMenuBtn_Click"/>
+            <Separator/>
+            <ui:MenuItem SymbolIcon="TextFont20" Click="FontMenuBtn_Click"/>
+        </Menu>
+        <Separator DockPanel.Dock="Top"/>
+        <TabControl x:Name="ControlTabs" Grid.Row="5">
+            <TabItem Header="DefaultTab" x:Name="DefaultTab">
+                <RichTextBox x:Name="DefTextBox"/>
+            </TabItem>
+        </TabControl>
+        <StatusBar Grid.Row="6">
+            <StatusBar.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </ItemsPanelTemplate>
+            </StatusBar.ItemsPanel>
+            <StatusBarItem>
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding Mode="OneWay" StringFormat="{}Line: {0}, Char: {1}">
+                            <Binding Path="Line" />
+                            <Binding Path="Character" />
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StatusBarItem>
+            <Separator Grid.Column="1" />
+            <StatusBarItem Grid.Column="2">
+                <TextBlock x:Name="LinesAndCharsStatusBarBlock" Text="{Binding File, Mode=OneWay}" />
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</ui:UiWindow>

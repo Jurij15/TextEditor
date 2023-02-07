@@ -10,5 +10,8 @@ namespace TextEditor
     public class Globals
     {
         public static ThemeService TS;
+        internal static int RunningTimeInSeconds;
+        internal static DateTime CurrentDateTime;
+        internal static string AppTitle = "TextEditor";
     }
 }
