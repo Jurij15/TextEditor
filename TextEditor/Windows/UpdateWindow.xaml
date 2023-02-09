@@ -26,10 +26,10 @@
             CanMaximize="False"
             Grid.Row="0"
             />
-        <ui:InfoBar Title="Checking for updates..." Message="Please wait.." Severity="Informational" IsClosable="False" IsOpen="False" Grid.Row="1"/>
-        <ui:InfoBar Title="Up to date" Message="This version is up to date" Severity="Success" IsClosable="False" IsOpen="True" Grid.Row="1"/>
-        <ui:InfoBar Title="Update available" Message="Please update your app" Severity="Warning" IsClosable="False" IsOpen="False" Grid.Row="1"/>
-        <ui:InfoBar Title="Server unavailable" Message="Please check your internet connection" Severity="Error" IsOpen="False" IsClosable="False" Grid.Row="1"/>
+        <ui:InfoBar Title="Checking for updates..." Message="Please wait.." Severity="Informational" IsClosable="False" IsOpen="False" Grid.Row="1" x:Name="CheckingForUpdatesStatusBar"/>
+        <ui:InfoBar Title="Up to date" Message="This version is up to date" Severity="Success" IsClosable="False" IsOpen="False" Grid.Row="1" x:Name="UpToDabeStatusBar"/>
+        <ui:InfoBar Title="Update available" Message="Please update your app" Severity="Warning" IsClosable="False" IsOpen="False" Grid.Row="1" Name="UpdateAvailableStatusBar"/>
+        <ui:InfoBar Title="Server unavailable" Message="Please check your internet connection" Severity="Error" IsOpen="False" IsClosable="False" Grid.Row="1" x:Name="ServerUnavailableStatusBar"/>
         <Grid Grid.Row="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

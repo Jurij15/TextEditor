@@ -51,15 +51,12 @@ namespace TextEditor
             Globals.TS = new ThemeService();
 
             InitializeComponent();
-            //Globals.TS.SetSystemAccent();
-            //Wpf.Ui.Appearance.Accent.ApplySystemAccent();
-           // Wpf.Ui.Appearance.Accent.Apply(Wpf.Ui.Appearance.Accent.GetColorizationColor(), Wpf.Ui.Appearance.Theme.GetAppTheme(), true);
+            Globals.TS.SetSystemAccent();
 
             DefTextBox.Name = "TextBoxDefault";
             RegisterName("TextBoxDefault", DefTextBox);
 
             this.Title = "TextEditor";
-            //ControlTabs.Items.Remove(DefaultTab);
             DefaultTab.Visibility = Visibility.Collapsed;
             DefTextBox.Visibility = Visibility.Collapsed;
 
@@ -78,6 +75,7 @@ namespace TextEditor
             ControlTabs.Items.Remove(DefaultTab);
         }
 
+        //i might start a new timer for this, so it updates faster
         void UpdateStatus()
         {
             if (Config.TabsCount != 0)
@@ -119,7 +117,9 @@ namespace TextEditor
                     caretLineNumber++;
                 }
 
-                string text = "Line: " + caretLineNumber.ToString() + " Total Lines: " + Alllines.ToString() + " | All Characters: 0";
+                string CurrentCharacter = GetCurrentlySelectedTabTextBox().Document.ContentStart.GetOffsetToPosition(GetCurrentlySelectedTabTextBox().CaretPosition).ToString();
+
+                string text = "Line: " + caretLineNumber.ToString() +" Character: "+ CurrentCharacter +" |"+ " Total Lines: " + Alllines.ToString() + " | All Characters: 0";
 
                 LinesAndCharsStatusBarBlock.Text = text;
             }
