@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TextEditor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280"
+        Title="TextEditor" Height="720" Width="1280"
         xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
-             
-       Background="Transparent"
+             Background="{ui:ThemeResource ApplicationBackgroundBrush}"
              ExtendsContentIntoTitleBar="True"
              WindowStartupLocation="CenterScreen"
-             WindowCornerPreference="Round">
+                              WindowBackdropType="Mica"
+                 WindowCornerPreference="Round"
+             >
     <Grid x:Name="DPanel">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -23,12 +24,13 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <ui:TitleBar Grid.Row="1" x:Name="MWindowTitleBar" DockPanel.Dock="Top"
-                     Title="TextEdit"
+                     Title="TextEditor"
                      ForceShutdown="False"
                      ShowClose="True"
                      ShowMaximize="True"
                      ShowMinimize="True"
                      UseSnapLayout="True"
+                     Background="Transparent"
                      />
         <Menu Background="Transparent" x:Name="MainMenu" Grid.Row="2" Height="51">
             <ui:MenuItem SymbolIcon="DocumentSplitHint24" Header="File">
@@ -73,13 +75,16 @@
                 <MenuItem Header="Color" x:Name="ColorMenuBtn" Click="ColorMenuBtn_Click"/>
             </ui:MenuItem>
             <ui:MenuItem SymbolIcon="ContactCard24" Header="About">
+                <MenuItem Header="Logger" x:Name="LoggerMenuBtn" Click="LoggerMenuBtn_Click"/>
+                <Separator x:Name="LoggerSeperatorONLYONDEBUG"/>
+                <MenuItem Header="Updater" x:Name="UpdaterMenuBtn" Click="UpdaterMenuBtn_Click"/>
                 <MenuItem Header="About TextEditor" x:Name="AboutMenuBtn" Click="AboutMenuBtn_Click"/>
             </ui:MenuItem>
             <Button Content="TimeHere" x:Name="TimeBtn" HorizontalAlignment="Center" FontSize="12" Height="37"/>
             <ui:Button Content="" Icon="DarkTheme24" x:Name="ThemeMainMenuBtn" Click="ThemeMainMenuBtn_Click" HorizontalAlignment="Center" FontSize="12" Height="37"/>
         </Menu>
         <Separator Grid.Row="3"/>
-        <Menu x:Name="QuickBarTray" Grid.Row="4">
+        <Menu Background="Transparent" x:Name="QuickBarTray" Grid.Row="4">
             <ui:MenuItem SymbolIcon="New20" Header="New" Click="NewMainMenuBtn_Click"/>
             <ui:MenuItem SymbolIcon="Open20" Header="Open" Click="OpenMainMenuBtn_Click"/>
             <Separator/>
@@ -98,7 +103,7 @@
                 <RichTextBox x:Name="DefTextBox"/>
             </TabItem>
         </TabControl>
-        <StatusBar Grid.Row="6">
+        <StatusBar Grid.Row="6" Background="Transparent">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>

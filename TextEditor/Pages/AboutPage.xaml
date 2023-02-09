@@ -36,6 +36,7 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom">
                         <TextBlock x:Name="BuildDateBlock" Text="Build Date: " Foreground="#57FFFFFF" />
+                        <TextBlock x:Name="VersionBlock" Text="Version" Foreground="#57FFFFFF"/>
                     </StackPanel>
                 </Grid>
             </Border>

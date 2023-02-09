@@ -24,8 +24,8 @@ using Newtonsoft.Json;
 using System.Windows.Media.Media3D;
 using System.IO;
 using TextEditor.Enums;
-using Wpf.Ui.Controls;
 using System.Windows.Threading;
+using TextEditor.Windows;
 
 namespace TextEditor
 {
@@ -51,7 +51,9 @@ namespace TextEditor
             Globals.TS = new ThemeService();
 
             InitializeComponent();
-            Globals.TS.SetSystemAccent();
+            //Globals.TS.SetSystemAccent();
+            //Wpf.Ui.Appearance.Accent.ApplySystemAccent();
+           // Wpf.Ui.Appearance.Accent.Apply(Wpf.Ui.Appearance.Accent.GetColorizationColor(), Wpf.Ui.Appearance.Theme.GetAppTheme(), true);
 
             DefTextBox.Name = "TextBoxDefault";
             RegisterName("TextBoxDefault", DefTextBox);
@@ -66,50 +68,66 @@ namespace TextEditor
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += timer_tick;
             timer.Start();
+
+            if (!Version.versionType.Contains("Debug"))
+            {
+                LoggerSeperatorONLYONDEBUG.Visibility = Visibility.Collapsed;
+                LoggerMenuBtn.Visibility = Visibility.Collapsed;
+            }
+            AddTabBtn_Click(null, null);
+            //ControlTabs.Items.Remove(DefaultTab);
+            MessageBox.Show(Config.TabsCount.ToString());
         }
 
         void UpdateStatus()
         {
-            if (GetCurrentlySelectedTabTextBox() == null)
+            if (Config.TabsCount != 0)
+            {
+                if (GetCurrentlySelectedTabTextBox() == null)
+                {
+                    LinesAndCharsStatusBarBlock.Text = string.Empty;
+                    return;
+                }
+
+                TextRange MyText = new TextRange(
+                GetCurrentlySelectedTabTextBox().Document.ContentStart,
+                GetCurrentlySelectedTabTextBox().Document.ContentEnd
+                );
+
+                string[] splittedLines = MyText.Text.Split(new[] { Environment.NewLine }
+                                              , StringSplitOptions.None); // or StringSplitOptions.RemoveEmptyEntries
+                int Alllines = splittedLines.Length;
+
+                TextPointer caretLineStart = GetCurrentlySelectedTabTextBox().CaretPosition.GetLineStartPosition(0);
+                TextPointer p = GetCurrentlySelectedTabTextBox().Document.ContentStart.GetLineStartPosition(0);
+                int caretLineNumber = 1;
+
+                while (true)
+                {
+                    if (caretLineStart.CompareTo(p) < 0)
+                    {
+                        break;
+                    }
+
+                    int result;
+                    p = p.GetLineStartPosition(1, out result);
+
+                    if (result == 0)
+                    {
+                        break;
+                    }
+
+                    caretLineNumber++;
+                }
+
+                string text = "Line: " + caretLineNumber.ToString() + " Total Lines: " + Alllines.ToString() + " | All Characters: 0";
+
+                LinesAndCharsStatusBarBlock.Text = text;
+            }
+            else if (Config.TabsCount == 0)
             {
                 LinesAndCharsStatusBarBlock.Text = string.Empty;
-                return;
             }
-
-            TextRange MyText = new TextRange(
-            GetCurrentlySelectedTabTextBox().Document.ContentStart,
-            GetCurrentlySelectedTabTextBox().Document.ContentEnd
-            );
-
-            string[] splittedLines = MyText.Text.Split(new[] { Environment.NewLine }
-                                          , StringSplitOptions.None); // or StringSplitOptions.RemoveEmptyEntries
-            int Alllines = splittedLines.Length;
-
-            TextPointer caretLineStart = GetCurrentlySelectedTabTextBox().CaretPosition.GetLineStartPosition(0);
-            TextPointer p = GetCurrentlySelectedTabTextBox().Document.ContentStart.GetLineStartPosition(0);
-            int caretLineNumber = 1;
-
-            while (true)
-            {
-                if (caretLineStart.CompareTo(p) < 0)
-                {
-                    break;
-                }
-
-                int result;
-                p = p.GetLineStartPosition(1, out result);
-
-                if (result == 0)
-                {
-                    break;
-                }
-
-                caretLineNumber++;
-            }
-
-            string text = "Line: " + caretLineNumber.ToString() + " Total Lines: " + Alllines.ToString() + " | All Characters: 0" ;
-
-            LinesAndCharsStatusBarBlock.Text = text;
         }
 
         void timer_tick(object sender, EventArgs e)
@@ -119,7 +137,36 @@ namespace TextEditor
             Globals.CurrentDateTime = DateTime.Now;
 
             //PosTextBox.Text = GetCurrentlySelectedTabTextBox().Document.ContentStart.GetOffsetToPosition(GetCurrentlySelectedTabTextBox().CaretPosition).ToString(); not sure what i did here
-            this.Title = GetCurrentlySelectedTab().Header + "-" + Globals.AppTitle;
+            if (GetCurrentlySelectedTab() != null)
+            {
+                if (!GetCurrentlySelectedTab().Header.ToString().Contains("Default"))
+                {
+                    string Title = GetCurrentlySelectedTab().Header + "-" + Globals.AppTitle;
+                    this.Title = Title;
+                    MWindowTitleBar.Title = Title;
+                }
+            }
+
+            if (Config.bLog)
+            {
+                if (Globals.TimeSinceLastTabsLogDump >= 5)
+                {
+                    Logger.Log("DUMPING TABS STATE:");
+                    Logger.Log("    Currently opened tabs: " + Config.TabsCount);
+                    if (GetCurrentlySelectedTab() == null)
+                    {
+                        Logger.Log("    No opened Tabs! ");
+                    }
+                    else
+                    {
+                        Logger.Log("    Currently selected tab header: " + GetCurrentlySelectedTab().Header);
+                        Logger.Log("    Currently selected tab Guid: " + GetCurrentlySelectedTabGuid());
+                    }
+                    Logger.Log("DUMPED TABS STATE!");
+                    Globals.TimeSinceLastTabsLogDump = 0;
+                }
+                else { Globals.TimeSinceLastTabsLogDump++; }
+            }
 
             UpdateStatus();
         }
@@ -365,16 +412,18 @@ namespace TextEditor
             rtextbox.Foreground = Brushes.White;
             rtextbox.FontWeight = FontWeights.Regular;
             rtextbox.CaretBrush = Brushes.White;
+            rtextbox.Background = Brushes.Transparent;
 
             //rtextbox.Background = Brushes.DimGray;
             //MessageBox.Show(guid);
+            //tab.Background = Brushes.Transparent;
 
             RegisterName(rtextbox.Name, rtextbox);
             tab.Content = rtextbox;
             ControlTabs.Items.Insert(1, tab);
             Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
         }
-        public void AddNewTabWithPage(UiPage Page, PageEnum SelectedPage)
+        public void AddNewTabWithPage(Wpf.Ui.Controls.UiPage Page, PageEnum SelectedPage)
         {
             Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
             Config.TabsCount++;
@@ -590,6 +639,18 @@ namespace TextEditor
             }
 
             GetCurrentlySelectedTabTextBox().Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
+        }
+
+        private void UpdaterMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            UpdateWindow window = new UpdateWindow();
+            window.ShowDialog();
+        }
+
+        private void LoggerMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            LoggerWindow window = new LoggerWindow();
+            window.Show();
         }
     }
 }

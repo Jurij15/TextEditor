@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -11,22 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace TextEditor.Pages
+namespace TextEditor.Windows
 {
     /// <summary>
-    /// Interaction logic for AboutPage.xaml
+    /// Interaction logic for UpdateWindow.xaml
     /// </summary>
-    public partial class AboutPage : Wpf.Ui.Controls.UiPage
+    public partial class UpdateWindow : Wpf.Ui.Controls.UiWindow
     {
-        public AboutPage()
+        public UpdateWindow()
         {
             InitializeComponent();
-
-            BuildDateBlock.Text = "Build Time: " + Assembly.GetExecutingAssembly().GetLinkerTime().ToString();
-            VersionBlock.Text = "Version: " + Version.VersionString;
+            Globals.TS.SetSystemAccent();
         }
     }
 }

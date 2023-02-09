@@ -16,10 +16,10 @@ namespace TextEditor
             Unstable,
             Release
         }
-        public static double VersionNumber = 0.1;
+        public static double VersionNumber = 0.5;
         public static string versionType = "Debug";
 
-        public static string VersionString = VersionNumber.ToString()+"-"+versionType;
+        public static string VersionString = VersionNumber.ToString() + "-" + versionType.ToString();
 
         public static string AboutString = "A simple notepad project" + Environment.NewLine + Environment.NewLine + "Made with <3 by Jurij15";
     }
