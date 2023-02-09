@@ -75,8 +75,7 @@ namespace TextEditor
                 LoggerMenuBtn.Visibility = Visibility.Collapsed;
             }
             AddTabBtn_Click(null, null);
-            //ControlTabs.Items.Remove(DefaultTab);
-            MessageBox.Show(Config.TabsCount.ToString());
+            ControlTabs.Items.Remove(DefaultTab);
         }
 
         void UpdateStatus()
@@ -145,6 +144,12 @@ namespace TextEditor
                     this.Title = Title;
                     MWindowTitleBar.Title = Title;
                 }
+            }
+            else
+            {
+                string Title = Globals.AppTitle;
+                this.Title = Title;
+                MWindowTitleBar.Title = Title;
             }
 
             if (Config.bLog)
