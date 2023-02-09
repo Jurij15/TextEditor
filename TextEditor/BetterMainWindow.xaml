@@ -88,6 +88,9 @@
             <ui:MenuItem SymbolIcon="New20" Header="New" Click="NewMainMenuBtn_Click"/>
             <ui:MenuItem SymbolIcon="Open20" Header="Open" Click="OpenMainMenuBtn_Click"/>
             <Separator/>
+            <ui:MenuItem SymbolIcon="Add20" Header="Add Tab" Click="AddTabBtn_Click"/>
+            <ui:MenuItem SymbolIcon="Delete20" Header="Remove Tab" Click="CloseTabBtn_Click"/>
+            <Separator/>
             <ui:MenuItem SymbolIcon="TextBold20" Click="BoldMenuButton_Click"/>
             <ui:MenuItem SymbolIcon="TextItalic20" Click="ItalicMenuButton_Click"/>
             <ui:MenuItem SymbolIcon="TextUnderline20" Click="UnderlineMenuButton_Click"/>

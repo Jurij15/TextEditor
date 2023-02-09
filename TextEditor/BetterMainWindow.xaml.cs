@@ -456,20 +456,28 @@ namespace TextEditor
         }
         public void RemoveTab()
         {
-            //Check if this is the about tab i might do
-            if (GetCurrentlySelectedTab().Name == "AboutTab")
+            if (Config.TabsCount == 1)
             {
-                ControlTabs.Items.Remove(GetCurrentlySelectedTab());
-            }
-            else if (GetCurrentlySelectedTab().Name == "SettingsTab")
-            {
-                ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+                //this is the last tab, we should not close it to prevent crash
+                NewMainMenuBtn_Click(null, null);
             }
             else
             {
-                Config.TabsCount--;
-                UnregisterName("TextBox" + GetCurrentlySelectedTabGuid());
-                ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+                //Check if this is the about tab i might do
+                if (GetCurrentlySelectedTab().Name == "AboutTab")
+                {
+                    ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+                }
+                else if (GetCurrentlySelectedTab().Name == "SettingsTab")
+                {
+                    ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+                }
+                else
+                {
+                    Config.TabsCount--;
+                    UnregisterName("TextBox" + GetCurrentlySelectedTabGuid());
+                    ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+                }
             }
         }
         #endregion
