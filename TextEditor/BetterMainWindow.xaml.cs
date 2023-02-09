@@ -26,6 +26,7 @@ using System.IO;
 using TextEditor.Enums;
 using System.Windows.Threading;
 using TextEditor.Windows;
+using TextEditor.Functions;
 
 namespace TextEditor
 {
@@ -44,6 +45,28 @@ namespace TextEditor
 
             public bool PrimaryButtonBlue;
 
+        }
+
+        public void ApplySettings()
+        {
+            Settings.GetSettings();
+            if (Settings.SettingsValues.Theme == "DARK")
+            {
+                //default is dark, no need to change anything
+            }
+            if (Settings.SettingsValues.Theme == "LIGHT")
+            {
+                ThemeMainMenuBtn_Click(null, null);
+            }
+
+            if (Settings.SettingsValues.ToolbarVisibility == true)
+            {
+                QuickBarTray.Visibility = Visibility.Visible;
+            }
+            else if (Settings.SettingsValues.ToolbarVisibility == false)
+            {
+                QuickBarTray.Visibility = Visibility.Collapsed;
+            }
         }
 
         public BetterMainWindow()
@@ -73,6 +96,8 @@ namespace TextEditor
             }
             AddTabBtn_Click(null, null);
             ControlTabs.Items.Remove(DefaultTab);
+
+            ApplySettings();
         }
 
         //i might start a new timer for this, so it updates faster
@@ -179,6 +204,7 @@ namespace TextEditor
         private void ThemeMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             Globals.TS.SetTheme(Globals.TS.GetTheme() == Wpf.Ui.Appearance.ThemeType.Dark ? Wpf.Ui.Appearance.ThemeType.Light : Wpf.Ui.Appearance.ThemeType.Dark);
+            Settings.SwitchThemeSetting();
 
             if (GetCurrentlySelectedTabTextBox() == null)
             {

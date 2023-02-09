@@ -32,5 +32,17 @@ namespace TextEditor
 
             return localTime;
         }
+
+        public static bool StringToBoolean(string str) //there is probably  a function for this
+        {
+            if(str == "true")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
