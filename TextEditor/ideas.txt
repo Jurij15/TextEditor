@@ -7,4 +7,4 @@ underline
 font - i also forgot what i wanted here
 
 
-Zoom (and display it in the statusbox)
+Zoom (and display it in the statusbox))
