@@ -101,7 +101,6 @@ namespace TextEditor
             UpdateStatus();
         }
 
-        //i might start a new timer for this, so it updates faster
         void UpdateStatus()
         {
             if (Config.TabsCount != 0)
@@ -145,7 +144,15 @@ namespace TextEditor
 
                 string CurrentCharacter = GetCurrentlySelectedTabTextBox().Document.ContentStart.GetOffsetToPosition(GetCurrentlySelectedTabTextBox().CaretPosition).ToString();
 
-                string text = "Line: " + caretLineNumber.ToString() +" Character: "+ CurrentCharacter +" |"+ " Total Lines: " + Alllines.ToString() + " | All Characters: 0";
+                var AllChars = new TextRange(GetCurrentlySelectedTabTextBox().Document.ContentStart, GetCurrentlySelectedTabTextBox().Document.ContentEnd).Text;
+                int count = 0;
+                foreach (var item in AllChars.ToCharArray())
+                {
+                    count++;
+                }
+                count = count - 2; //richtextbox already contains some characters, 2 i think in total
+
+                string text = "Line: " + caretLineNumber.ToString() +" Character: "+ CurrentCharacter +" |"+ " Total Lines: " + Alllines.ToString() + " | All Characters: "+count.ToString();
 
                 LinesAndCharsStatusBarBlock.Text = text;
             }
