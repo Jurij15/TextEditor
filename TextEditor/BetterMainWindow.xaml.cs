@@ -164,6 +164,17 @@ namespace TextEditor
 
             ApplySettings();
             UpdateStatus();
+
+            Logger.Log("HardwareAcceleration.IsSupported is: "+Wpf.Ui.Hardware.HardwareAcceleration.IsSupported(Wpf.Ui.Hardware.RenderingTier.FullAcceleration).ToString());
+            #region Testing
+            // if the app crashes here, just comment everything out
+            Wpf.Ui.Extensions.WindowExtensions.ApplyCorners(this, Wpf.Ui.Appearance.WindowCornerPreference.Round); //this could be a setting
+            //Wpf.Ui.Extensions.WindowExtensions.ApplyDefaultBackground(this);
+            //MessageBox.Show(Wpf.Ui.Interop.UnsafeNativeMethods.GetDwmColor().ToString());
+            //Wpf.Ui.Styles.Controls.ContextMenu contextMenu = new Wpf.Ui.Styles.Controls.ContextMenu();
+            //contextMenu.InitializeComponent();
+            GetCurrentlySelectedTabTextBox().ContextMenu = (System.Windows.Controls.ContextMenu)new Wpf.Ui.Styles.Controls.ContextMenu();
+            #endregion
         }
 
         #region Event Handlers
