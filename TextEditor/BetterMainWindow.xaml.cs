@@ -27,6 +27,7 @@ using TextEditor.Enums;
 using System.Windows.Threading;
 using TextEditor.Windows;
 using TextEditor.Functions;
+using System.Configuration;
 
 namespace TextEditor
 {
@@ -70,6 +71,23 @@ namespace TextEditor
             {
                 QuickBarTray.Visibility = Visibility.Collapsed;
             }
+
+            //this visiblity is not changing idk why
+            if (Settings.SettingsValues.StatusBarVisibility == true)
+            {
+                MainWindowStatusBar.Visibility = Visibility.Visible;
+            }
+            else if (Settings.SettingsValues.StatusBarVisibility == false)
+            {
+                MainWindowStatusBar.Visibility = Visibility.Collapsed;
+            }
+
+            //i ABSOLUTELY need to figure this u
+            //BooleanToVisibilityConverter converter= new BooleanToVisibilityConverter();
+            //QuickBarTray.Visibility = converter.ConvertBack((object)Settings.SettingsValues.ToolbarVisibility);
+
+            //Wpf.Ui.Interop.UnsafeNativeMethods.ApplyWindowCornerPreference(this, Settings.SettingsValues.CornerPreference);
+            this.WindowCornerPreference= Settings.SettingsValues.CornerPreference;
         }
 
         void UpdateStatus()
@@ -130,6 +148,7 @@ namespace TextEditor
             else if (Config.TabsCount == 0)
             {
                 LinesAndCharsStatusBarBlock.Text = string.Empty;
+                MainWindowStatusBar.Visibility = Visibility.Collapsed;
             }
         }
         #endregion
@@ -165,12 +184,17 @@ namespace TextEditor
             ApplySettings();
             UpdateStatus();
 
+            Globals.MainWindow= this;
+            Globals.MainWindowObject = this;
+
+            
+
             Logger.Log("HardwareAcceleration.IsSupported is: "+Wpf.Ui.Hardware.HardwareAcceleration.IsSupported(Wpf.Ui.Hardware.RenderingTier.FullAcceleration).ToString());
             #region Testing
             // if the app crashes here, just comment everything out
-            Wpf.Ui.Extensions.WindowExtensions.ApplyCorners(this, Wpf.Ui.Appearance.WindowCornerPreference.Round); //this could be a setting
+            //Wpf.Ui.Extensions.WindowExtensions.ApplyCorners(this, Wpf.Ui.Appearance.WindowCornerPreference.Round); //this could be a setting
             //Wpf.Ui.Extensions.WindowExtensions.ApplyDefaultBackground(this);
-            Settings.ResetSettings();
+            //Settings.ResetSettings();
             #endregion
         }
 
@@ -208,9 +232,7 @@ namespace TextEditor
 
         private void ThemeMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            Globals.TS.SetTheme(Globals.TS.GetTheme() == Wpf.Ui.Appearance.ThemeType.Dark ? Wpf.Ui.Appearance.ThemeType.Light : Wpf.Ui.Appearance.ThemeType.Dark);
-            Settings.SwitchThemeSetting();
-
+            Globals.ChangeTheme();
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -522,7 +544,6 @@ namespace TextEditor
 
         private void ControlTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Logger.Log("ControlTabs selection changed for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTab() == null)
             {
                 return;
@@ -530,6 +551,7 @@ namespace TextEditor
             UpdateStatus();
             if (GetCurrentlySelectedTab() != null)
             {
+                Logger.Log("ControlTabs selection changed for tab with GUID: " + GetCurrentlySelectedTabGuid());
                 if (!GetCurrentlySelectedTab().Header.ToString().Contains("Default"))
                 {
                     string Title = GetCurrentlySelectedTab().Header + "-" + Globals.AppTitle;
@@ -735,7 +757,8 @@ namespace TextEditor
 
             ControlTabs.Items.Insert(1, tab);
             Logger.Log("Added a new tab with page: " + SelectedPage.ToString());
-            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+            //Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+            ControlTabs.SelectedItem = tab;
         }
         public void RemoveTab()
         {

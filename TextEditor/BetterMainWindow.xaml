@@ -106,7 +106,7 @@
                 <RichTextBox x:Name="DefTextBox"/>
             </TabItem>
         </TabControl>
-        <StatusBar Grid.Row="6" Background="Transparent">
+        <StatusBar x:Name="MainWindowStatusBar" Grid.Row="6" Background="Transparent">
             <StatusBar.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Grid>

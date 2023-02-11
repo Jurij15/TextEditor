@@ -13,6 +13,8 @@ namespace TextEditor.Functions
         {
             public static string Theme = "DARK"; //default value (will be overwritten with the saved one) ((MAKE SURE ITS IN ALL CAPS!!!))
             public static bool ToolbarVisibility = true; //default value (will be overwritten with the saved one)
+            public static Wpf.Ui.Appearance.WindowCornerPreference CornerPreference = Wpf.Ui.Appearance.WindowCornerPreference.Round;
+            public static bool StatusBarVisibility = true;
         }
         public static string LocalAppData = Environment.GetEnvironmentVariable("LocalAppData");
 
@@ -24,6 +26,9 @@ namespace TextEditor.Functions
 
         public static string AppDataThemeConfigFile = AppDataSavesDir + "theme";
         public static string AppDataToolBarVisibilityConfigFile = AppDataSavesDir + "ToolbarVisibility";
+        public static string AppDataCornerPreferenceConfigFile = AppDataSavesDir + "CornerPref";
+        public static string AppDataStatusBarVisibilityConfigFile = AppDataSavesDir + "StatBarVisibility";
+
 
         public static void CreateSettings() //create the settings folder and configs
         {
@@ -47,6 +52,18 @@ namespace TextEditor.Functions
                 sw.WriteLine(SettingsValues.ToolbarVisibility.ToString());
                 sw.Close();
             }
+
+            using (StreamWriter sw = File.CreateText(AppDataCornerPreferenceConfigFile))
+            {
+                sw.WriteLine(SettingsValues.CornerPreference.ToString());
+                sw.Close();
+            }
+
+            using (StreamWriter sw = new StreamWriter(AppDataStatusBarVisibilityConfigFile))
+            {
+                sw.WriteLine(SettingsValues.StatusBarVisibility.ToString());
+                sw.Close();
+            }
         }
 
         public static void GetSettings()
@@ -59,6 +76,7 @@ namespace TextEditor.Functions
             {
                 SettingsValues.Theme = File.ReadAllText(AppDataThemeConfigFile);
                 SettingsValues.ToolbarVisibility = Convert.ToBoolean(File.ReadAllText(AppDataToolBarVisibilityConfigFile));
+                Enum.TryParse<Wpf.Ui.Appearance.WindowCornerPreference>(File.ReadAllText(AppDataCornerPreferenceConfigFile), out SettingsValues.CornerPreference);
             }
         }
 
@@ -91,6 +109,45 @@ namespace TextEditor.Functions
         {
             Directory.Delete(RootAppDataDir, true);
             CreateSettings();
+        }
+
+        public static void ChangeWindowCornerPreferenceSetting(Wpf.Ui.Appearance.WindowCornerPreference CornerPref)
+        {
+            if (File.Exists(AppDataCornerPreferenceConfigFile))
+            {
+                File.Delete(AppDataCornerPreferenceConfigFile);
+            }
+            using (StreamWriter sw = File.CreateText(AppDataCornerPreferenceConfigFile))
+            {
+                sw.WriteLine(CornerPref.ToString());
+                sw.Close();
+            }
+        }
+
+        public static void ChangeStatusBarVisuiblitySetting(bool NewValue)
+        {
+            if (File.Exists(AppDataStatusBarVisibilityConfigFile))
+            {
+                File.Delete(AppDataStatusBarVisibilityConfigFile);
+            }
+            using (StreamWriter sw = new StreamWriter(AppDataStatusBarVisibilityConfigFile))
+            {
+                sw.WriteLine(NewValue.ToString());
+                sw.Close();
+            }
+        }
+
+        public static void ChangeToolBarVisuiblitySetting(bool NewValue)
+        {
+            if (File.Exists(AppDataToolBarVisibilityConfigFile))
+            {
+                File.Delete(AppDataToolBarVisibilityConfigFile);
+            }
+            using (StreamWriter sw = new StreamWriter(AppDataToolBarVisibilityConfigFile))
+            {
+                sw.WriteLine(NewValue.ToString());
+                sw.Close();
+            }
         }
     }
 }
