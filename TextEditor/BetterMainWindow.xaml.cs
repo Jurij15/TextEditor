@@ -35,6 +35,7 @@ namespace TextEditor
     /// </summary>
     public partial class BetterMainWindow : Wpf.Ui.Controls.UiWindow
     {
+        #region Structs
         public struct SimpleDialogParams
         {
             public string Title;
@@ -46,7 +47,9 @@ namespace TextEditor
             public bool PrimaryButtonBlue;
 
         }
+        #endregion
 
+        #region Functions
         public void ApplySettings()
         {
             Settings.GetSettings();
@@ -67,38 +70,6 @@ namespace TextEditor
             {
                 QuickBarTray.Visibility = Visibility.Collapsed;
             }
-        }
-
-        public BetterMainWindow()
-        {
-            Globals.TS = new ThemeService();
-
-            InitializeComponent();
-            Globals.TS.SetSystemAccent();
-
-            DefTextBox.Name = "TextBoxDefault";
-            RegisterName("TextBoxDefault", DefTextBox);
-
-            this.Title = "TextEditor";
-            DefaultTab.Visibility = Visibility.Collapsed;
-            DefTextBox.Visibility = Visibility.Collapsed;
-
-            //start the timer
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
-            timer.Tick += timer_tick;
-            timer.Start();
-
-            if (!Version.versionType.Contains("Debug"))
-            {
-                LoggerSeperatorONLYONDEBUG.Visibility = Visibility.Collapsed;
-                LoggerMenuBtn.Visibility = Visibility.Collapsed;
-            }
-            AddTabBtn_Click(null, null);
-            ControlTabs.Items.Remove(DefaultTab);
-
-            ApplySettings();
-            UpdateStatus();
         }
 
         void UpdateStatus()
@@ -152,7 +123,7 @@ namespace TextEditor
                 }
                 count = count - 2; //richtextbox already contains some characters, 2 i think in total
 
-                string text = "Line: " + caretLineNumber.ToString() +" Character: "+ CurrentCharacter +" |"+ " Total Lines: " + Alllines.ToString() + " | All Characters: "+count.ToString();
+                string text = "Line: " + caretLineNumber.ToString() + " Character: " + CurrentCharacter + " |" + " Total Lines: " + Alllines.ToString() + " | All Characters: " + count.ToString();
 
                 LinesAndCharsStatusBarBlock.Text = text;
             }
@@ -161,6 +132,41 @@ namespace TextEditor
                 LinesAndCharsStatusBarBlock.Text = string.Empty;
             }
         }
+        #endregion
+
+        public BetterMainWindow()
+        {
+            Globals.TS = new ThemeService();
+
+            InitializeComponent();
+            Globals.TS.SetSystemAccent();
+
+            DefTextBox.Name = "TextBoxDefault";
+            RegisterName("TextBoxDefault", DefTextBox);
+
+            this.Title = "TextEditor";
+            DefaultTab.Visibility = Visibility.Collapsed;
+            DefTextBox.Visibility = Visibility.Collapsed;
+
+            //start the timer
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += timer_tick;
+            timer.Start();
+
+            if (!Version.versionType.Contains("Debug"))
+            {
+                LoggerSeperatorONLYONDEBUG.Visibility = Visibility.Collapsed;
+                LoggerMenuBtn.Visibility = Visibility.Collapsed;
+            }
+            AddTabBtn_Click(null, null);
+            ControlTabs.Items.Remove(DefaultTab);
+
+            ApplySettings();
+            UpdateStatus();
+        }
+
+        #region Event Handlers
 
         void timer_tick(object sender, EventArgs e)
         {
@@ -298,226 +304,6 @@ namespace TextEditor
         {
             Logger.Log("Opened statistics window");
         }
-
-        #region OLDTabs
-        public TabItem GetCurrentlySelectedTabOLD()
-        {
-            return (TabItem)ControlTabs.SelectedItem;
-        }
-        public int GetSelectedTabIndexOLD()
-        {
-            return ControlTabs.SelectedIndex;
-        }
-        public RichTextBox GetCurrentlySelectedTabTextBoxOLD()
-        {
-            //MessageBox.Show(GetSelectedTabIndex().ToString());
-            if (GetSelectedTabIndexOLD() == 0)
-            {
-                return ((RichTextBox)DPanel.FindName("TextBoxDefault")); //this is the default notepad that is created in normal xaml
-            }
-            return ((RichTextBox)DPanel.FindName("TextBox" + GetSelectedTabIndexOLD().ToString()));
-        }
-        private void CloseTabBtn_Click(object sender, RoutedEventArgs e)
-        {
-            RemoveTab();
-        }
-
-        public void RemoveTabOld()
-        {
-            //unregister the name before it the tab gets removed and count is decremented (hope this works)
-            if (GetSelectedTabIndexOLD() == 0)
-            {
-                //we must not close the only open tab, we can just reset the text in it
-                //MenuNewBtn_Click(sender, e);
-            }
-            else
-            {
-                UnregisterName("TextBox" + GetSelectedTabIndexOLD().ToString());
-                ControlTabs.Items.Remove(GetCurrentlySelectedTab());
-                Config.TabsCount--;
-            }
-        }
-        public void AddNewTabOLD()
-        {
-            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
-            Config.TabsCount++;
-            TabItem tab = new TabItem();
-            tab.Header = "New Tab";
-
-            ///TODO
-            ///Implement a way to check if the tab its trying to add already exists
-            ///
-            ///something like tghis
-            /*
-            int newindex = 0;
-
-            bool bFoundNewIndex = false;
-            while (!bFoundNewIndex)
-            { 
-                //explanation
-
-                //we create a new variable and increment it, then search if it exists
-                int currentindex = 0;
-                currentindex++;
-                string name = "TextBox" + currentindex.ToString();
-                var bExists = FindName(name);
-                if ((bool)bExists)
-                {
-                    //if it does we just continiue
-                    continue;
-                }
-                else if (!(bool)bExists)
-                {
-                    //if it doesnt, we are done and stop the loop
-                    newindex = currentindex;
-                    bFoundNewIndex = true;
-                }
-            }
-            */
-
-            int index = 0;
-            while (index < Config.TabsCount)
-            {
-                index++;
-            }
-
-            RichTextBox rtextbox = new RichTextBox();
-            //int math = GetSelectedTabIndex() + 1;
-            rtextbox.Name = "TextBox" + index.ToString();
-            tab.Content = rtextbox;
-            //MessageBox.Show(rtextbox.Name);
-            //try to register the name so it can be found using FindName
-            RegisterName(rtextbox.Name, rtextbox);
-
-            ControlTabs.Items.Insert(1, tab);
-            //we should also select the newly added tab
-            //ControlTabs.SelectedItem = tab;
-            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
-            //bFoundNewIndex = false; //for later
-        }
-
-        private void AddTabBtn_Click(object sender, RoutedEventArgs e)
-        {
-            AddNewTab();
-        }
-        #endregion
-
-        #region NewTabs
-        //Some code here is recycled from the old Tabs
-        public TabItem GetCurrentlySelectedTab()
-        {
-            Logger.Log("Currently Selected Tab was requested by "+ (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
-            return (TabItem)ControlTabs.SelectedItem;
-        }
-        public int GetSelectedTabIndex()
-        {
-            Logger.Log("Currently Selected Tab Index was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
-            return ControlTabs.SelectedIndex;
-        }
-        public string GetCurrentlySelectedTabName()
-        {
-            Logger.Log("Currently Selected Tab Name was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
-            return GetCurrentlySelectedTab().Name;
-        }
-        public string GetCurrentlySelectedTabGuid()
-        {
-            //in short, this just removes the "TAB" at the start of the name, and returns the guid
-            Logger.Log("Currently Selected Tab GUID was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
-            string CurrentTabName = GetCurrentlySelectedTabName();
-            return CurrentTabName.Remove(0, 3);
-        }
-        public RichTextBox GetCurrentlySelectedTabTextBox()
-        {
-            Logger.Log("Currently Selected Tab Text Box was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
-            return (RichTextBox)DPanel.FindName("TextBox" + GetCurrentlySelectedTabGuid());
-        }
-        public void AddNewTab()
-        {
-            Logger.Log("Adding new tab was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
-            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
-            Config.TabsCount++;
-            TabItem tab = new TabItem();
-            tab.Header = "New Tab";
-
-            var guid = Guid.NewGuid().ToString();
-            string name = guid.Replace("-", "_");
-            tab.Name = "TAB" + name;
-            RichTextBox rtextbox = new RichTextBox();
-            rtextbox.Name = "TextBox" + name;
-
-            rtextbox.Foreground = Brushes.White;
-            rtextbox.FontWeight = FontWeights.Regular;
-            rtextbox.CaretBrush = Brushes.White;
-            rtextbox.Background = Brushes.Transparent;
-
-            rtextbox.TextChanged += RTextBox_TextChanged;
-            //rtextbox.Background = Brushes.DimGray;
-            //MessageBox.Show(guid);
-            //tab.Background = Brushes.Transparent;
-
-            RegisterName(rtextbox.Name, rtextbox);
-            tab.Content = rtextbox;
-            ControlTabs.Items.Insert(1, tab);
-            //Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
-            Logger.Log("Added a new tab with GUID: "+guid);
-            ControlTabs.SelectedItem= tab;
-        }
-        public void AddNewTabWithPage(Wpf.Ui.Controls.UiPage Page, PageEnum SelectedPage)
-        {
-            Logger.Log("Adding new tab with page was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
-            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
-            Config.TabsCount++;
-            TabItem tab = new TabItem();
-            //set the tab header based on the page enum
-            switch (SelectedPage)
-            {
-                case PageEnum.About:
-                    tab.Name = "AboutTab";
-                    tab.Header = "About TextEditor";
-                    break;
-                case PageEnum.Settings:
-                    tab.Name = "SettingsTab";
-                    tab.Header = "Settings";
-                    break;
-            }
-
-            Frame tabFrame = new Frame();
-            tabFrame.Content = Page;
-
-            tab.Content = tabFrame;
-
-            ControlTabs.Items.Insert(1, tab);
-            Logger.Log("Added a new tab with page: "+SelectedPage.ToString());
-            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
-        }
-        public void RemoveTab()
-        {
-            Logger.Log("Tab removal was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name+" ,to remove a tab with GUID: "+GetCurrentlySelectedTabGuid());
-            if (Config.TabsCount == 1)
-            {
-                //this is the last tab, we should not close it to prevent crash
-                NewMainMenuBtn_Click(null, null);
-            }
-            else
-            {
-                //Check if this is the about tab i might do
-                if (GetCurrentlySelectedTab().Name == "AboutTab")
-                {
-                    ControlTabs.Items.Remove(GetCurrentlySelectedTab());
-                }
-                else if (GetCurrentlySelectedTab().Name == "SettingsTab")
-                {
-                    ControlTabs.Items.Remove(GetCurrentlySelectedTab());
-                }
-                else
-                {
-                    Config.TabsCount--;
-                    UnregisterName("TextBox" + GetCurrentlySelectedTabGuid());
-                    ControlTabs.Items.Remove(GetCurrentlySelectedTab());
-                }
-            }
-        }
-        #endregion
 
         private void AboutMenuBtn_Click(object sender, RoutedEventArgs e)
         {
@@ -750,5 +536,226 @@ namespace TextEditor
                 MWindowTitleBar.Title = Title;
             }
         }
+        #endregion
+
+        #region OLDTabs
+        public TabItem GetCurrentlySelectedTabOLD()
+        {
+            return (TabItem)ControlTabs.SelectedItem;
+        }
+        public int GetSelectedTabIndexOLD()
+        {
+            return ControlTabs.SelectedIndex;
+        }
+        public RichTextBox GetCurrentlySelectedTabTextBoxOLD()
+        {
+            //MessageBox.Show(GetSelectedTabIndex().ToString());
+            if (GetSelectedTabIndexOLD() == 0)
+            {
+                return ((RichTextBox)DPanel.FindName("TextBoxDefault")); //this is the default notepad that is created in normal xaml
+            }
+            return ((RichTextBox)DPanel.FindName("TextBox" + GetSelectedTabIndexOLD().ToString()));
+        }
+        private void CloseTabBtn_Click(object sender, RoutedEventArgs e)
+        {
+            RemoveTab();
+        }
+
+        public void RemoveTabOld()
+        {
+            //unregister the name before it the tab gets removed and count is decremented (hope this works)
+            if (GetSelectedTabIndexOLD() == 0)
+            {
+                //we must not close the only open tab, we can just reset the text in it
+                //MenuNewBtn_Click(sender, e);
+            }
+            else
+            {
+                UnregisterName("TextBox" + GetSelectedTabIndexOLD().ToString());
+                ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+                Config.TabsCount--;
+            }
+        }
+        public void AddNewTabOLD()
+        {
+            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+            Config.TabsCount++;
+            TabItem tab = new TabItem();
+            tab.Header = "New Tab";
+
+            ///TODO
+            ///Implement a way to check if the tab its trying to add already exists
+            ///
+            ///something like tghis
+            /*
+            int newindex = 0;
+
+            bool bFoundNewIndex = false;
+            while (!bFoundNewIndex)
+            { 
+                //explanation
+
+                //we create a new variable and increment it, then search if it exists
+                int currentindex = 0;
+                currentindex++;
+                string name = "TextBox" + currentindex.ToString();
+                var bExists = FindName(name);
+                if ((bool)bExists)
+                {
+                    //if it does we just continiue
+                    continue;
+                }
+                else if (!(bool)bExists)
+                {
+                    //if it doesnt, we are done and stop the loop
+                    newindex = currentindex;
+                    bFoundNewIndex = true;
+                }
+            }
+            */
+
+            int index = 0;
+            while (index < Config.TabsCount)
+            {
+                index++;
+            }
+
+            RichTextBox rtextbox = new RichTextBox();
+            //int math = GetSelectedTabIndex() + 1;
+            rtextbox.Name = "TextBox" + index.ToString();
+            tab.Content = rtextbox;
+            //MessageBox.Show(rtextbox.Name);
+            //try to register the name so it can be found using FindName
+            RegisterName(rtextbox.Name, rtextbox);
+
+            ControlTabs.Items.Insert(1, tab);
+            //we should also select the newly added tab
+            //ControlTabs.SelectedItem = tab;
+            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+            //bFoundNewIndex = false; //for later
+        }
+
+        private void AddTabBtn_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewTab();
+        }
+        #endregion
+
+        #region NewTabs
+        //Some code here is recycled from the old Tabs
+        public TabItem GetCurrentlySelectedTab()
+        {
+            Logger.Log("Currently Selected Tab was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
+            return (TabItem)ControlTabs.SelectedItem;
+        }
+        public int GetSelectedTabIndex()
+        {
+            Logger.Log("Currently Selected Tab Index was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
+            return ControlTabs.SelectedIndex;
+        }
+        public string GetCurrentlySelectedTabName()
+        {
+            Logger.Log("Currently Selected Tab Name was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
+            return GetCurrentlySelectedTab().Name;
+        }
+        public string GetCurrentlySelectedTabGuid()
+        {
+            //in short, this just removes the "TAB" at the start of the name, and returns the guid
+            Logger.Log("Currently Selected Tab GUID was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
+            string CurrentTabName = GetCurrentlySelectedTabName();
+            return CurrentTabName.Remove(0, 3);
+        }
+        public RichTextBox GetCurrentlySelectedTabTextBox()
+        {
+            Logger.Log("Currently Selected Tab Text Box was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
+            return (RichTextBox)DPanel.FindName("TextBox" + GetCurrentlySelectedTabGuid());
+        }
+        public void AddNewTab()
+        {
+            Logger.Log("Adding new tab was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
+            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+            Config.TabsCount++;
+            TabItem tab = new TabItem();
+            tab.Header = "New Tab";
+
+            var guid = Guid.NewGuid().ToString();
+            string name = guid.Replace("-", "_");
+            tab.Name = "TAB" + name;
+            RichTextBox rtextbox = new RichTextBox();
+            rtextbox.Name = "TextBox" + name;
+
+            rtextbox.Foreground = Brushes.White;
+            rtextbox.FontWeight = FontWeights.Regular;
+            rtextbox.CaretBrush = Brushes.White;
+            rtextbox.Background = Brushes.Transparent;
+
+            rtextbox.TextChanged += RTextBox_TextChanged;
+            //rtextbox.Background = Brushes.DimGray;
+            //MessageBox.Show(guid);
+            //tab.Background = Brushes.Transparent;
+
+            RegisterName(rtextbox.Name, rtextbox);
+            tab.Content = rtextbox;
+            ControlTabs.Items.Insert(1, tab);
+            //Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+            Logger.Log("Added a new tab with GUID: " + guid);
+            ControlTabs.SelectedItem = tab;
+        }
+        public void AddNewTabWithPage(Wpf.Ui.Controls.UiPage Page, PageEnum SelectedPage)
+        {
+            Logger.Log("Adding new tab with page was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
+            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+            Config.TabsCount++;
+            TabItem tab = new TabItem();
+            //set the tab header based on the page enum
+            switch (SelectedPage)
+            {
+                case PageEnum.About:
+                    tab.Name = "AboutTab";
+                    tab.Header = "About TextEditor";
+                    break;
+                case PageEnum.Settings:
+                    tab.Name = "SettingsTab";
+                    tab.Header = "Settings";
+                    break;
+            }
+
+            Frame tabFrame = new Frame();
+            tabFrame.Content = Page;
+
+            tab.Content = tabFrame;
+
+            ControlTabs.Items.Insert(1, tab);
+            Logger.Log("Added a new tab with page: " + SelectedPage.ToString());
+            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+        }
+        public void RemoveTab()
+        {
+            Logger.Log("Tab removal was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,to remove a tab with GUID: " + GetCurrentlySelectedTabGuid());
+            if (Config.TabsCount == 1)
+            {
+                //this is the last tab, we should not close it to prevent crash
+                NewMainMenuBtn_Click(null, null);
+            }
+            else
+            {
+                //Check if this is the about tab i might do
+                if (GetCurrentlySelectedTab().Name == "AboutTab")
+                {
+                    ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+                }
+                else if (GetCurrentlySelectedTab().Name == "SettingsTab")
+                {
+                    ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+                }
+                else
+                {
+                    Config.TabsCount--;
+                    UnregisterName("TextBox" + GetCurrentlySelectedTabGuid());
+                    ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+                }
+            }
+        }
+        #endregion
     }
 }

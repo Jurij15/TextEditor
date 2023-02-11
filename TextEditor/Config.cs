@@ -10,7 +10,5 @@ namespace TextEditor
     {
         public static bool bLog = true;
         public static int TabsCount;
-
-        public static string Theme = "dark"; //dark thene
     }
 }

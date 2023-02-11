@@ -8,7 +8,6 @@ namespace TextEditor
 {
     public static class Version
     {
-        //just for context, dont actually use this
         public enum VersionTypes : int
         {
             Debug,
@@ -16,8 +15,30 @@ namespace TextEditor
             Unstable,
             Release
         }
+
+        public static string GetVersionTypeStringFromEnum(VersionTypes VersionType)
+        {
+            switch (VersionType)
+            {
+                case VersionTypes.Debug:
+                    return "Debug";
+                    break;
+                case VersionTypes.Testing:
+                    return "Testing";
+                    break; 
+                case VersionTypes.Unstable:
+                    return "Unstable";
+                    break;
+                case VersionTypes.Release:
+                    return "Release";
+                    break;
+            }
+
+            return null;
+        }
+
         public static double VersionNumber = 0.5;
-        public static string versionType = "Debug";
+        public static string versionType = GetVersionTypeStringFromEnum(VersionTypes.Debug);
 
         public static string VersionString = VersionNumber.ToString() + "-" + versionType.ToString();
 
