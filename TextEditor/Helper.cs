@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using TextEditor.Functions;
 
 namespace TextEditor
 {
@@ -31,6 +33,20 @@ namespace TextEditor
             var localTime = TimeZoneInfo.ConvertTimeFromUtc(linkTimeUtc, tz);
 
             return localTime;
+        }
+        public static string GetLatestVersionStringFromGitHub()
+        {
+            string ReturnValue = string.Empty;
+            if (File.Exists(Settings.AppDataTempDir + "TempLatestVersionFile"))
+            {
+                File.Delete(Settings.AppDataTempDir + "TempLatestVersionFile");
+            }
+            WebClient wc = new WebClient();
+            wc.DownloadFile(@"https://raw.githubusercontent.com/Jurij15/TextEditor/master/TextEditor/Releases/LatestVersion.txt", Settings.AppDataTempDir + "TempLatestVersionFile");
+
+            ReturnValue = File.ReadAllText(Settings.AppDataTempDir + "TempLatestVersionFile");
+
+            return ReturnValue; ;
         }
     }
 }

@@ -24,7 +24,7 @@ namespace TextEditor.Windows
             CheckingForUpdatesStatusBar.IsOpen= false;
             UpToDabeStatusBar.IsOpen= false;
             UpdateAvailableStatusBar.IsOpen= false;
-            ServerUnavailableStatusBar.IsOpen= true; // i will leave it on this for now, while i get some sort of updates working
+            ServerUnavailableStatusBar.IsOpen= false; // i will leave it on this for now, while i get some sort of updates working
         }
         public UpdateWindow()
         {
@@ -33,6 +33,18 @@ namespace TextEditor.Windows
 
             InstalledVerBlock.Text = Version.VersionString;
             SetStatusBar();
+            string GitVersion = Helper.GetLatestVersionStringFromGitHub();
+            LatestVersionBlock.Text = GitVersion;
+
+            if (GitVersion == Version.VersionString)
+            {
+                // we will just assume its the latest version
+                UpToDabeStatusBar.IsOpen = true;
+            }
+            else if (GitVersion != Version.VersionString)
+            {
+                UpdateAvailableStatusBar.IsOpen = true;
+            }
         }
     }
 }

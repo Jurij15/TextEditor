@@ -20,6 +20,8 @@ namespace TextEditor.Functions
 
         public static string AppDataSavesDir = RootAppDataDir + "/Saves/";
 
+        public static string AppDataTempDir = RootAppDataDir + "/Temp/";
+
         public static string AppDataThemeConfigFile = AppDataSavesDir + "theme";
         public static string AppDataToolBarVisibilityConfigFile = AppDataSavesDir + "ToolbarVisibility";
 
@@ -31,7 +33,7 @@ namespace TextEditor.Functions
             }
 
             Directory.CreateDirectory(AppDataSavesDir);
-            Directory.CreateDirectory(AppDataSavesDir);
+            Directory.CreateDirectory(AppDataTempDir);
 
             //now create the files
             using (StreamWriter sw = File.CreateText(AppDataThemeConfigFile))
@@ -83,6 +85,12 @@ namespace TextEditor.Functions
 
                 SettingsValues.Theme = "LIGHT";
             }
+        }
+
+        public static void ResetSettings()
+        {
+            Directory.Delete(RootAppDataDir, true);
+            CreateSettings();
         }
     }
 }
