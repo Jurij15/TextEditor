@@ -228,6 +228,8 @@ namespace TextEditor
             }
             else
                 GetCurrentlySelectedTabTextBox().Document.Blocks.Clear();
+
+            Logger.Log("Cleared text on tab with GUID: " + GetCurrentlySelectedTabGuid());
         }
 
         private void OpenMainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -253,6 +255,8 @@ namespace TextEditor
                 //AdjustAppTitleByDocumentName(docToOpen);
                 GetCurrentlySelectedTab().Header = tabcontent;
             }
+
+            Logger.Log("Opened a file with name: "+tabcontent+" at location: "+openFileDialog.FileName+" in tab with guid: "+GetCurrentlySelectedTabGuid());
         }
 
         private void SaveMainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -267,27 +271,32 @@ namespace TextEditor
                 File.WriteAllText(saveFileDialog.FileName, range);
                 GetCurrentlySelectedTab().Header = saveFileDialog.SafeFileName;
             }
+
+            Logger.Log("Saved file to location: " + saveFileDialog.FileName + " in tab with GUID:" + GetCurrentlySelectedTabGuid());
         }
 
         private void PreferencesMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             SettingsPage page = new SettingsPage();
             AddNewTabWithPage(page, PageEnum.Settings);
+
+            Logger.Log("Opened settings Page with GUID: " + GetCurrentlySelectedTabGuid());
         }
 
         private void InstanceManagerMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            Logger.Log("Opened instance manager window");
         }
 
         private void ExitMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Application shutdown requested");
             Application.Current.Shutdown();
         }
 
         private void StatisticsMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            Logger.Log("Opened statistics window");
         }
 
         #region OLDTabs
@@ -397,29 +406,34 @@ namespace TextEditor
         //Some code here is recycled from the old Tabs
         public TabItem GetCurrentlySelectedTab()
         {
+            Logger.Log("Currently Selected Tab was requested by "+ (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
             return (TabItem)ControlTabs.SelectedItem;
         }
         public int GetSelectedTabIndex()
         {
+            Logger.Log("Currently Selected Tab Index was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
             return ControlTabs.SelectedIndex;
         }
         public string GetCurrentlySelectedTabName()
         {
+            Logger.Log("Currently Selected Tab Name was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
             return GetCurrentlySelectedTab().Name;
         }
         public string GetCurrentlySelectedTabGuid()
         {
             //in short, this just removes the "TAB" at the start of the name, and returns the guid
+            Logger.Log("Currently Selected Tab GUID was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
             string CurrentTabName = GetCurrentlySelectedTabName();
             return CurrentTabName.Remove(0, 3);
         }
         public RichTextBox GetCurrentlySelectedTabTextBox()
         {
-            //MessageBox.Show(GetCurrentlySelectedTextBoxName());
+            Logger.Log("Currently Selected Tab Text Box was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
             return (RichTextBox)DPanel.FindName("TextBox" + GetCurrentlySelectedTabGuid());
         }
         public void AddNewTab()
         {
+            Logger.Log("Adding new tab was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
             Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
             Config.TabsCount++;
             TabItem tab = new TabItem();
@@ -445,10 +459,12 @@ namespace TextEditor
             tab.Content = rtextbox;
             ControlTabs.Items.Insert(1, tab);
             //Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+            Logger.Log("Added a new tab with GUID: "+guid);
             ControlTabs.SelectedItem= tab;
         }
         public void AddNewTabWithPage(Wpf.Ui.Controls.UiPage Page, PageEnum SelectedPage)
         {
+            Logger.Log("Adding new tab with page was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
             Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
             Config.TabsCount++;
             TabItem tab = new TabItem();
@@ -471,10 +487,12 @@ namespace TextEditor
             tab.Content = tabFrame;
 
             ControlTabs.Items.Insert(1, tab);
+            Logger.Log("Added a new tab with page: "+SelectedPage.ToString());
             Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
         }
         public void RemoveTab()
         {
+            Logger.Log("Tab removal was requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name+" ,to remove a tab with GUID: "+GetCurrentlySelectedTabGuid());
             if (Config.TabsCount == 1)
             {
                 //this is the last tab, we should not close it to prevent crash
@@ -503,12 +521,14 @@ namespace TextEditor
 
         private void AboutMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Opened about page by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
             AboutPage page = new AboutPage();
             AddNewTabWithPage(page, PageEnum.About);
         }
 
         private void NewWindowMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Opened a new window by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
             MainWindow window = new MainWindow();
             window.Owner = null;
             window.Show();
@@ -516,6 +536,7 @@ namespace TextEditor
 
         private void UndoMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Undo requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name+" ,for tab with GUID: "+GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -528,6 +549,7 @@ namespace TextEditor
 
         private void RedoMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Redo requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -538,6 +560,7 @@ namespace TextEditor
 
         private void CutMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Cur requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -550,6 +573,7 @@ namespace TextEditor
 
         private void CopyMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Copy requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -562,6 +586,7 @@ namespace TextEditor
 
         private void PasteMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Paste requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -574,6 +599,7 @@ namespace TextEditor
 
         private void SelectAllMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Select All requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -583,6 +609,7 @@ namespace TextEditor
 
         private void DateTimeMenuBTn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Date and Time requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             string CurrentText = new TextRange(GetCurrentlySelectedTabTextBox().Document.ContentStart, GetCurrentlySelectedTabTextBox().Document.ContentEnd).Text;
             string NewText = CurrentText + DateTime.Now.ToString();
 
@@ -592,6 +619,7 @@ namespace TextEditor
 
         private void FontMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Fonr window opened by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -608,6 +636,7 @@ namespace TextEditor
 
         private void ColorMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Color window opened by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -621,6 +650,7 @@ namespace TextEditor
 
         private void WordWrapCheckBox_Checked(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Word Wrap CheckBox value changed to checked by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -633,6 +663,7 @@ namespace TextEditor
 
         private void WordWrapCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Word Wrap CheckBox value changed to unchecked by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -645,6 +676,7 @@ namespace TextEditor
 
         private void BoldMenuButton_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Bold requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -655,6 +687,7 @@ namespace TextEditor
 
         private void ItalicMenuButton_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Italc requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -665,6 +698,7 @@ namespace TextEditor
 
         private void UnderlineMenuButton_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Underline requested by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name + " ,for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTabTextBox() == null)
             {
                 return;
@@ -675,6 +709,7 @@ namespace TextEditor
 
         private void UpdaterMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            Logger.Log("Updater window opened by by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name );
             UpdateWindow window = new UpdateWindow();
             window.ShowDialog();
         }
@@ -687,11 +722,13 @@ namespace TextEditor
 
         private void RTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            Logger.Log("TextBox value changed for tab with GUID: " + GetCurrentlySelectedTabGuid());
             UpdateStatus();
         }
 
         private void ControlTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Logger.Log("ControlTabs selection changed for tab with GUID: " + GetCurrentlySelectedTabGuid());
             if (GetCurrentlySelectedTab() == null)
             {
                 return;
