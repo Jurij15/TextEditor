@@ -12,7 +12,7 @@ namespace TextEditor.Functions
         public static class SettingsValues
         {
             public static string Theme = "DARK"; //default value (will be overwritten with the saved one) ((MAKE SURE ITS IN ALL CAPS!!!))
-            public static bool ToolbarVisibility = false; //default value (will be overwritten with the saved one)
+            public static bool ToolbarVisibility = true; //default value (will be overwritten with the saved one)
         }
         public static string LocalAppData = Environment.GetEnvironmentVariable("LocalAppData");
 
@@ -56,7 +56,7 @@ namespace TextEditor.Functions
             else
             {
                 SettingsValues.Theme = File.ReadAllText(AppDataThemeConfigFile);
-                SettingsValues.ToolbarVisibility = Helper.StringToBoolean(File.ReadAllText(AppDataToolBarVisibilityConfigFile));
+                SettingsValues.ToolbarVisibility = Convert.ToBoolean(File.ReadAllText(AppDataToolBarVisibilityConfigFile));
             }
         }
 

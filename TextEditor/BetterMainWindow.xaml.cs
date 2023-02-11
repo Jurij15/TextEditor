@@ -452,7 +452,8 @@ namespace TextEditor
             RegisterName(rtextbox.Name, rtextbox);
             tab.Content = rtextbox;
             ControlTabs.Items.Insert(1, tab);
-            Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+            //Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
+            ControlTabs.SelectedItem= tab;
         }
         public void AddNewTabWithPage(Wpf.Ui.Controls.UiPage Page, PageEnum SelectedPage)
         {

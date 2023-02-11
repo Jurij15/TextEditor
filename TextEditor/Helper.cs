@@ -35,7 +35,7 @@ namespace TextEditor
 
         public static bool StringToBoolean(string str) //there is probably  a function for this
         {
-            if(str == "true")
+            if(str == "True")
             {
                 return true;
             }
