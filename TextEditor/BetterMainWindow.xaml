@@ -101,7 +101,7 @@
             <ui:MenuItem SymbolIcon="TextFont20" Click="FontMenuBtn_Click"/>
         </Menu>
         <Separator DockPanel.Dock="Top"/>
-        <TabControl x:Name="ControlTabs" Grid.Row="5">
+        <TabControl x:Name="ControlTabs" Grid.Row="5" SelectionChanged="ControlTabs_SelectionChanged">
             <TabItem Header="DefaultTab" x:Name="DefaultTab">
                 <RichTextBox x:Name="DefTextBox"/>
             </TabItem>

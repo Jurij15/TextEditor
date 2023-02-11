@@ -98,6 +98,7 @@ namespace TextEditor
             ControlTabs.Items.Remove(DefaultTab);
 
             ApplySettings();
+            UpdateStatus();
         }
 
         //i might start a new timer for this, so it updates faster
@@ -161,21 +162,6 @@ namespace TextEditor
             Globals.CurrentDateTime = DateTime.Now;
 
             //PosTextBox.Text = GetCurrentlySelectedTabTextBox().Document.ContentStart.GetOffsetToPosition(GetCurrentlySelectedTabTextBox().CaretPosition).ToString(); not sure what i did here
-            if (GetCurrentlySelectedTab() != null)
-            {
-                if (!GetCurrentlySelectedTab().Header.ToString().Contains("Default"))
-                {
-                    string Title = GetCurrentlySelectedTab().Header + "-" + Globals.AppTitle;
-                    this.Title = Title;
-                    MWindowTitleBar.Title = Title;
-                }
-            }
-            else
-            {
-                string Title = Globals.AppTitle;
-                this.Title = Title;
-                MWindowTitleBar.Title = Title;
-            }
 
             if (Config.bLog)
             {
@@ -197,8 +183,6 @@ namespace TextEditor
                 }
                 else { Globals.TimeSinceLastTabsLogDump++; }
             }
-
-            UpdateStatus();
         }
 
         private void ThemeMainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -445,6 +429,7 @@ namespace TextEditor
             rtextbox.CaretBrush = Brushes.White;
             rtextbox.Background = Brushes.Transparent;
 
+            rtextbox.TextChanged += RTextBox_TextChanged;
             //rtextbox.Background = Brushes.DimGray;
             //MessageBox.Show(guid);
             //tab.Background = Brushes.Transparent;
@@ -691,6 +676,35 @@ namespace TextEditor
         {
             LoggerWindow window = new LoggerWindow();
             window.Show();
+        }
+
+        private void RTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateStatus();
+        }
+
+        private void ControlTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (GetCurrentlySelectedTab() == null)
+            {
+                return;
+            }
+            UpdateStatus();
+            if (GetCurrentlySelectedTab() != null)
+            {
+                if (!GetCurrentlySelectedTab().Header.ToString().Contains("Default"))
+                {
+                    string Title = GetCurrentlySelectedTab().Header + "-" + Globals.AppTitle;
+                    this.Title = Title;
+                    MWindowTitleBar.Title = Title;
+                }
+            }
+            else
+            {
+                string Title = Globals.AppTitle;
+                this.Title = Title;
+                MWindowTitleBar.Title = Title;
+            }
         }
     }
 }
