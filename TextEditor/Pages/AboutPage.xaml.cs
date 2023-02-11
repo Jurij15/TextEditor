@@ -25,7 +25,7 @@ namespace TextEditor.Pages
         {
             InitializeComponent();
 
-            BuildDateBlock.Text = "Build Time: " + Assembly.GetExecutingAssembly().GetLinkerTime().ToString();
+            //BuildDateBlock.Text = "Build Time: " + Assembly.GetExecutingAssembly().GetLinkerTime().ToString(); // this caused the app to crash, will fix in a later release
             VersionBlock.Text = "Version: " + Version.VersionString;
         }
     }
