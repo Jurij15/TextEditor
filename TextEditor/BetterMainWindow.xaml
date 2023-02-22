@@ -87,11 +87,6 @@
                 <MenuItem Header="About TextEditor" x:Name="AboutMenuBtn" Click="AboutMenuBtn_Click"/>
             </ui:MenuItem>
             <Button Content="TimeHere" x:Name="TimeBtn" HorizontalAlignment="Center" FontSize="12" Height="37" Click="TimeBtn_Click"/>
-            <ui:Flyout x:Name="TimeFlyout">
-                <StackPanel>
-                    <TextBlock x:Name="TextBlockTime"/>
-                </StackPanel>
-            </ui:Flyout>
             <ui:Button Content="" Icon="DarkTheme24" x:Name="ThemeMainMenuBtn" Click="ThemeMainMenuBtn_Click" HorizontalAlignment="Center" FontSize="12" Height="37"/>
         </Menu>
         <Separator Grid.Row="3"/>

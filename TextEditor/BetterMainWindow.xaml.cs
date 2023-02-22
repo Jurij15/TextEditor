@@ -822,7 +822,7 @@ namespace TextEditor
 
         private void TimeBtn_Click(object sender, RoutedEventArgs e)
         {
-            TimeFlyout.Show();
+
         }
     }
 }
