@@ -97,6 +97,7 @@ namespace TextEditor
                 if (GetCurrentlySelectedTabTextBox() == null)
                 {
                     LinesAndCharsStatusBarBlock.Text = string.Empty;
+                    MainWindowStatusBar.Visibility = Visibility.Collapsed;
                     return;
                 }
 
@@ -539,6 +540,32 @@ namespace TextEditor
             //MainWindowStatusBar.Visibility = Visibility.Collapsed;
         }
 
+
+        private void CakeLieDialog_ButtonLeftClick(object sender, RoutedEventArgs e)
+        {
+            CakeLieDialog.Hide();
+        }
+
+        private void FindMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CakeLieDialog.ShowAndWaitAsync();
+        }
+
+        private void GoToMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CakeLieDialog.ShowAndWaitAsync();
+        }
+
+        private void ReplaceMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CakeLieDialog.ShowAndWaitAsync();
+        }
+
+        private void SearchWebMenuBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CakeLieDialog.ShowAndWaitAsync();
+        }
+
         private void RTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             Logger.Log("TextBox value changed for tab with GUID: " + GetCurrentlySelectedTabGuid());
@@ -792,5 +819,10 @@ namespace TextEditor
             }
         }
         #endregion
+
+        private void TimeBtn_Click(object sender, RoutedEventArgs e)
+        {
+            TimeFlyout.Show();
+        }
     }
 }

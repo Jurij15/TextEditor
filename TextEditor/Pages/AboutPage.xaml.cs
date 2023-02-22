@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -31,7 +32,7 @@ namespace TextEditor.Pages
 
         private void OpenGitHubBtn_Click(object sender, RoutedEventArgs e)
         {
-
+            Process.Start(new ProcessStartInfo("https://github.com/Jurij15/TextEditor") { UseShellExecute = true });
         }
     }
 }

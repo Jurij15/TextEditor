@@ -57,6 +57,12 @@
                 <ui:MenuItem Header="Cut" x:Name="CutMenuBtn" Click="CutMenuBtn_Click"/>
                 <ui:MenuItem Header="Copy" x:Name="CopyMenuBtn" Click="CopyMenuBtn_Click"/>
                 <ui:MenuItem Header="Paste" x:Name="PasteMenuBtn" Click="PasteMenuBtn_Click"/>
+                <Separator/>
+                <ui:MenuItem Header="Find" x:Name="FindMenuBtn" Click="FindMenuBtn_Click"/>
+                <ui:MenuItem Header="Go To" x:Name="GoToMenuBtn" Click="GoToMenuBtn_Click"/>
+                <ui:MenuItem Header="Replace" x:Name="ReplaceMenuBtn" Click="ReplaceMenuBtn_Click"/>
+                <ui:MenuItem Header="Search with browser" x:Name="SearchWebMenuBtn" Click="SearchWebMenuBtn_Click"/>
+                <Separator/>
                 <ui:MenuItem Header="SelectAll" x:Name="SelectAllMenuBtn" Click="SelectAllMenuBtn_Click"/>
                 <ui:MenuItem Header="Date/Time" x:Name="DateTimeMenuBTn" Click="DateTimeMenuBTn_Click"/>
             </ui:MenuItem>
@@ -80,7 +86,12 @@
                 <MenuItem Header="Updater" x:Name="UpdaterMenuBtn" Click="UpdaterMenuBtn_Click"/>
                 <MenuItem Header="About TextEditor" x:Name="AboutMenuBtn" Click="AboutMenuBtn_Click"/>
             </ui:MenuItem>
-            <Button Content="TimeHere" x:Name="TimeBtn" HorizontalAlignment="Center" FontSize="12" Height="37"/>
+            <Button Content="TimeHere" x:Name="TimeBtn" HorizontalAlignment="Center" FontSize="12" Height="37" Click="TimeBtn_Click"/>
+            <ui:Flyout x:Name="TimeFlyout">
+                <StackPanel>
+                    <TextBlock x:Name="TextBlockTime"/>
+                </StackPanel>
+            </ui:Flyout>
             <ui:Button Content="" Icon="DarkTheme24" x:Name="ThemeMainMenuBtn" Click="ThemeMainMenuBtn_Click" HorizontalAlignment="Center" FontSize="12" Height="37"/>
         </Menu>
         <Separator Grid.Row="3"/>
@@ -135,5 +146,10 @@
                 <TextBlock x:Name="LinesAndCharsStatusBarBlock" Text="{Binding File, Mode=OneWay}" />
             </StatusBarItem>
         </StatusBar>
+        <ui:Dialog x:Name="CakeLieDialog" ButtonLeftAppearance="Primary" ButtonRightVisibility="Collapsed" ButtonLeftName="Close" ButtonLeftClick="CakeLieDialog_ButtonLeftClick" Grid.Row="5">
+            <StackPanel>
+                <TextBlock Text="The Cake is a Lie"/>
+            </StackPanel>
+        </ui:Dialog>
     </Grid>
 </ui:UiWindow>
