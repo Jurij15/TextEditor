@@ -141,7 +141,7 @@ namespace TextEditor
                 }
                 count = count - 2; //richtextbox already contains some characters, 2 i think in total
 
-                string text = "Line: " + caretLineNumber.ToString() + " Character: " + CurrentCharacter + " |" + " Total Lines: " + Alllines.ToString() + " | All Characters: " + count.ToString();
+                string text = "Line: " + caretLineNumber.ToString() + " Character: " + CurrentCharacter + " |" + " Total Lines: " + Alllines.ToString() + " | Total Characters: " + count.ToString();
 
                 LinesAndCharsStatusBarBlock.Text = text;
             }
@@ -187,7 +187,7 @@ namespace TextEditor
             Globals.MainWindow= this;
             Globals.MainWindowObject = this;
 
-            
+            Wpf.Ui.Appearance.Watcher.Watch(this);
 
             Logger.Log("HardwareAcceleration.IsSupported is: "+Wpf.Ui.Hardware.HardwareAcceleration.IsSupported(Wpf.Ui.Hardware.RenderingTier.FullAcceleration).ToString());
             #region Testing
@@ -713,6 +713,7 @@ namespace TextEditor
             tab.Name = "TAB" + name;
             RichTextBox rtextbox = new RichTextBox();
             rtextbox.Name = "TextBox" + name;
+            rtextbox.AcceptsReturn= true;
 
             rtextbox.Foreground = Brushes.White;
             rtextbox.FontWeight = FontWeights.Regular;

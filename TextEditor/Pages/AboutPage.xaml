@@ -11,7 +11,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Border>
                 <Border.Background>
-                    <ImageBrush ImageSource="fluent-ui-microsoft.png"
+                    <ImageBrush ImageSource="/Pages/TextEditor-0.6Debug-ScreenShot2.png"
                                 RenderOptions.BitmapScalingMode="HighQuality"
                                 Stretch="UniformToFill"
                                 />
@@ -30,7 +30,8 @@
                         VerticalAlignment="Center"
                         Background="Transparent">
                         <TextBlock FontWeight="Bold" FontStyle="Normal" Text="TextEditor" FontSize="42" Foreground="#FFFFFF"/>
-                        <TextBlock Text="TBD"/>
+                        <TextBlock Text="A simple text editor for Windows, made with WPF and WPF-UI" Foreground="White"/>
+                        <ui:Button x:Name="OpenGitHubBtn" Click="OpenGitHubBtn_Click" Appearance="Transparent" Content="Open GitHub" Margin="2,6,2,2"/>
                     </StackPanel>
                     <StackPanel                         
                         HorizontalAlignment="Right"

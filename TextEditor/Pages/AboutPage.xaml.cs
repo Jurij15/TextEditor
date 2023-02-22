@@ -25,8 +25,13 @@ namespace TextEditor.Pages
         {
             InitializeComponent();
 
-            //BuildDateBlock.Text = "Build Time: " + Assembly.GetExecutingAssembly().GetLinkerTime().ToString(); // this caused the app to crash, will fix in a later release
+            BuildDateBlock.Text = "Build Time: " + Assembly.GetExecutingAssembly().GetLinkerTime().ToString(); // this caused the app to crash, will fix in a later release
             VersionBlock.Text = "Version: " + Version.VersionString;
+        }
+
+        private void OpenGitHubBtn_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

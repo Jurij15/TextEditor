@@ -10,6 +10,8 @@
 
   <ItemGroup>
     <None Remove="Pages\fluent-ui-microsoft.png" />
+    <None Remove="Pages\TextEditor-0.6Debug-ScreenShot.png" />
+    <None Remove="Pages\TextEditor-0.6Debug-ScreenShot2.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,6 +21,8 @@
 
   <ItemGroup>
     <Resource Include="Pages\fluent-ui-microsoft.png" />
+    <Resource Include="Pages\TextEditor-0.6Debug-ScreenShot.png" />
+    <Resource Include="Pages\TextEditor-0.6Debug-ScreenShot2.png" />
   </ItemGroup>
 
 </Project>
