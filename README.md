@@ -1,7 +1,7 @@
 # TextEditor - A simple text editor for Windows
 Made with WPF and [WPF-UI](https://github.com/lepoco/wpfui)
 
-![Texeditor-Windows11-ScreenShot-0.5Debug](https://github.com/Jurij15/TextEditor/blob/master/images/TextEditor-Screenshot.png)
+![Texeditor-Windows11-ScreenShot-0.5Debug](https://github.com/Jurij15/TextEditor/blob/master/images/TextEditor-0.6Debug-ScreenShot.png)
 
 # Requirements
 
