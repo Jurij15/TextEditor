@@ -76,6 +76,7 @@ namespace TextEditor.Functions
             {
                 SettingsValues.Theme = File.ReadAllText(AppDataThemeConfigFile);
                 SettingsValues.ToolbarVisibility = Convert.ToBoolean(File.ReadAllText(AppDataToolBarVisibilityConfigFile));
+                SettingsValues.StatusBarVisibility = Convert.ToBoolean(File.ReadAllText(AppDataStatusBarVisibilityConfigFile));
                 Enum.TryParse<Wpf.Ui.Appearance.WindowCornerPreference>(File.ReadAllText(AppDataCornerPreferenceConfigFile), out SettingsValues.CornerPreference);
             }
         }

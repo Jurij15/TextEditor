@@ -15,5 +15,6 @@
         <ListBox x:Name="LogBox" Margin="0,0,0,115"/>
         <ui:TextBox x:Name="CommandBox" PlaceholderText="Type your command here..." Margin="78,614,0,0" VerticalAlignment="Top"/>
         <ui:Button Content="Execute" x:Name="ExecuteCommandBtn" Margin="0,628,0,0" VerticalAlignment="Top"/>
+        <ui:Button Content="Test" x:Name="TestingBtn" Click="TestingBtn_Click" Margin="296,577,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

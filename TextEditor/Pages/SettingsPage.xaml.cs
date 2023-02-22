@@ -122,7 +122,7 @@ namespace TextEditor.Pages
                 return;
             }
             Settings.ChangeStatusBarVisuiblitySetting(true);
-            AppRestartBar.ShowAsync();
+            //AppRestartBar.ShowAsync();
         }
 
         private void StatusBarVisibility_Unchecked(object sender, RoutedEventArgs e)
@@ -132,7 +132,7 @@ namespace TextEditor.Pages
                 return;
             }
             Settings.ChangeStatusBarVisuiblitySetting(false);
-            AppRestartBar.ShowAsync();
+            //AppRestartBar.ShowAsync();
         }
 
         private void QuickbarVisiblity_Checked(object sender, RoutedEventArgs e)
@@ -142,7 +142,7 @@ namespace TextEditor.Pages
                 return;
             }
             Settings.ChangeToolBarVisuiblitySetting(true);
-            AppRestartBar.ShowAsync();
+            //AppRestartBar.ShowAsync();
         }
 
         private void QuickbarVisiblity_Unchecked(object sender, RoutedEventArgs e)
@@ -152,7 +152,7 @@ namespace TextEditor.Pages
                 return;
             }
             Settings.ChangeToolBarVisuiblitySetting(false);
-            AppRestartBar.ShowAsync();
+            //AppRestartBar.ShowAsync();
         }
     }
 }

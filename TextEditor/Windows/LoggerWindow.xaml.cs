@@ -40,5 +40,10 @@ namespace TextEditor.Windows
                 LogBox.Items.Add(item);
             }
         }
+
+        private void TestingBtn_Click(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

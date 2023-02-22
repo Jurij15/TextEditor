@@ -228,6 +228,8 @@ namespace TextEditor
                 }
                 else { Globals.TimeSinceLastTabsLogDump++; }
             }
+
+            ApplySettings();
         }
 
         private void ThemeMainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -534,6 +536,7 @@ namespace TextEditor
         {
             LoggerWindow window = new LoggerWindow();
             window.Show();
+            //MainWindowStatusBar.Visibility = Visibility.Collapsed;
         }
 
         private void RTextBox_TextChanged(object sender, TextChangedEventArgs e)
