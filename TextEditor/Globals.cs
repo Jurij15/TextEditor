@@ -21,6 +21,8 @@ namespace TextEditor
         public static UiWindow MainWindow;
         public static object MainWindowObject;
 
+        public static bool bShouldShowWelcomeWindow = false;
+
         public static int TimeSinceLastTabsLogDump = 0;// we will dump tabs state into log every 5 seconds
 
         public static void ChangeTheme()

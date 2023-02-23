@@ -28,6 +28,7 @@ using System.Windows.Threading;
 using TextEditor.Windows;
 using TextEditor.Functions;
 using System.Configuration;
+using System.Threading;
 
 namespace TextEditor
 {
@@ -51,9 +52,58 @@ namespace TextEditor
         #endregion
 
         #region Functions
+
+        #region TestingWelcome
+        int WelcomeTimeCounter = 0;
+        bool bIsWelcomwVivible = false;
+        DispatcherTimer Welcometimer = new DispatcherTimer();
+        void ShowWelcome()
+        {
+            WelcomeWindow welcomeWindow = new WelcomeWindow();
+            welcomeWindow.Show();
+        }
+
+        void ShowWelcomForTime()
+        {
+            Welcometimer.Interval = TimeSpan.FromSeconds(1);
+            Welcometimer.Tick += timer_tick2;
+            Welcometimer.Start();
+            WelcomeWindow welcomeWindow = new WelcomeWindow();
+            welcomeWindow.Close();
+        }
+        void timer_tick2(object sender, EventArgs e)
+        {
+            //we will just show it for 5 secs
+            if (WelcomeTimeCounter <= 3)
+            {
+                if (!bIsWelcomwVivible)
+                {
+                    ShowWelcome();
+                    this.Hide();
+                    bIsWelcomwVivible=true;
+                }
+            }
+            else
+            {
+                Welcometimer.Stop();
+                MessageBox.Show("Stopping timer");
+                WelcomeWindow w = new WelcomeWindow();
+                w.Close();
+                this.Show();
+            }
+        }
+        #endregion
+
         public void ApplySettings()
         {
             Settings.GetSettings();
+            if (Globals.bShouldShowWelcomeWindow)
+            {
+                //I NEED TO FIX THIS ASAP
+                //this.Hide();
+                //ShowWelcome();
+                //this.Show();
+            }
             if (Settings.SettingsValues.Theme == "DARK")
             {
                 //default is dark, no need to change anything
@@ -536,8 +586,9 @@ namespace TextEditor
         private void LoggerMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             LoggerWindow window = new LoggerWindow();
-            window.Show();
-            //MainWindowStatusBar.Visibility = Visibility.Collapsed;
+            //window.Show();
+            WelcomeWindow welcome = new WelcomeWindow();
+            welcome.ShowDialog();
         }
 
 
@@ -595,6 +646,20 @@ namespace TextEditor
                 this.Title = Title;
                 MWindowTitleBar.Title = Title;
             }
+            if (GetCurrentlySelectedTabName() == "AboutTab")
+            {
+                ControlTabs.Background = Brushes.Transparent;
+            }
+            else if (GetCurrentlySelectedTabName() == "SettingsTab")
+            {
+                ControlTabs.Background = Brushes.Transparent;
+            }
+            else
+            {
+                //ControlTabs.Background = Brushes.Transparent;
+                ControlTabs.ClearValue(TabControl.BackgroundProperty);
+            }
+
         }
         #endregion
 
@@ -757,7 +822,8 @@ namespace TextEditor
 
             RegisterName(rtextbox.Name, rtextbox);
             tab.Content = rtextbox;
-            ControlTabs.Items.Insert(1, tab);
+            //ControlTabs.Items.Insert(1, tab);
+            ControlTabs.Items.Add(tab);
             //Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
             Logger.Log("Added a new tab with GUID: " + guid);
             ControlTabs.SelectedItem = tab;
@@ -778,15 +844,18 @@ namespace TextEditor
                 case PageEnum.Settings:
                     tab.Name = "SettingsTab";
                     tab.Header = "Settings";
+                    
                     break;
             }
 
             Frame tabFrame = new Frame();
+            tabFrame.Background = Brushes.Transparent;
             tabFrame.Content = Page;
-
+            ControlTabs.Background = Brushes.Transparent;
             tab.Content = tabFrame;
 
-            ControlTabs.Items.Insert(1, tab);
+            //ControlTabs.Items.Insert(1, tab);
+            ControlTabs.Items.Add(tab);
             Logger.Log("Added a new tab with page: " + SelectedPage.ToString());
             //Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
             ControlTabs.SelectedItem = tab;
@@ -805,6 +874,7 @@ namespace TextEditor
                 if (GetCurrentlySelectedTab().Name == "AboutTab")
                 {
                     ControlTabs.Items.Remove(GetCurrentlySelectedTab());
+
                 }
                 else if (GetCurrentlySelectedTab().Name == "SettingsTab")
                 {

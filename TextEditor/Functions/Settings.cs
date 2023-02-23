@@ -32,6 +32,7 @@ namespace TextEditor.Functions
 
         public static void CreateSettings() //create the settings folder and configs
         {
+            Globals.bShouldShowWelcomeWindow = true;
             if (Directory.Exists(RootAppDataDir))
             {
                 Directory.Delete(RootAppDataDir, true); // this will delete anything already in there

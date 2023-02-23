@@ -154,5 +154,10 @@ namespace TextEditor.Pages
             Settings.ChangeToolBarVisuiblitySetting(false);
             //AppRestartBar.ShowAsync();
         }
+
+        private void ResetSettingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -7,7 +7,7 @@
       xmlns:local="clr-namespace:TextEditor.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-           Background="{ui:ThemeResource ApplicationBackgroundBrush}"
+           Background="Transparent"
       Title="SettingsPage">
     <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <Grid>
@@ -36,24 +36,70 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Settings" FontSize="40" FontWeight="Bold" Grid.Row="1"/>
-            <ui:Button Content="Refresh" Appearance="Transparent" Icon="ArrowCircleDown24" x:Name="SettingsRefreshBtn" Click="SettingsRefrestBtn_Click" Grid.Row="1" Margin="160,10,0,0"/>
-            <Separator Grid.Row="2" Margin="2,4,2,4"/>
-            <TextBlock Text="Theme" Grid.Row="3" Margin="2,4,0,0" FontSize="24"/>
-            <ComboBox x:Name="ThemeCombo" Text="Theme" Grid.Row="3" Margin="80,4,4,2">
-                <ComboBoxItem Content="Light" x:Name="LightThemeItem" Selected="LightThemeItem_Selected"/>
-                <ComboBoxItem Content="Dark" x:Name="DarkThemeItem" Selected="DarkThemeItem_Selected"/>
-            </ComboBox>
-            <Separator Grid.Row="4" Margin="2,4,2,4"/>
-            <TextBlock Text="Corners" Grid.Row="5" Margin="2,4,0,0" FontSize="24"/>
-            <ComboBox x:Name="CornerPreferenceCombo" Text="Theme" Grid.Row="5" Margin="90,4,4,2">
-                <ComboBoxItem Content="Round" x:Name="RoundCornerPreference" Selected="RoundCornerPreference_Selected"/>
-                <ComboBoxItem Content="Round Small" x:Name="RoundSmallCornerPreference" Selected="RoundSmallCornerPreference_Selected"/>
-                <ComboBoxItem Content="Do not round" x:Name="DoNotRoundCornerPreference" Selected="DoNotRoundCornerPreference_Selected"/>
-            </ComboBox>
-            <Separator Grid.Row="6" Margin="2,4,2,4"/>
-            <ui:ToggleSwitch x:Name="StatusBarVisibility" Grid.Row="7" Margin="2,8,2,8" Content="Status Bar" Checked="StatusBarVisibility_Checked" Unchecked="StatusBarVisibility_Unchecked"/>
-            <ui:ToggleSwitch x:Name="QuickbarVisiblity" Grid.Row="8" Margin="2,8,2,8" Content="QuickBar" Checked="QuickbarVisiblity_Checked" Unchecked="QuickbarVisiblity_Unchecked"/>
+            <ui:CardExpander Grid.Row="2" Margin="4,4,4,4" x:Name="BasicSettingsExpander">
+                <ui:CardExpander.Header>
+                    <StackPanel>
+                        <TextBlock Text="Basic Settings" FontWeight="ExtraBold" FontSize="16"/>
+                        <TextBlock Text="Quick settings to change the look and feel of the application"/>
+                    </StackPanel>
+                </ui:CardExpander.Header>
+                <VirtualizingStackPanel>
+                    <TextBlock Text="Theme" Grid.Row="3" Margin="2,4,670,0" FontSize="24" HorizontalAlignment="Left"/>
+                    <ComboBox x:Name="ThemeCombo" Text="Theme" Grid.Row="3" Margin="2,4,0,0">
+                        <ComboBoxItem Content="Light" x:Name="LightThemeItem" Selected="LightThemeItem_Selected"/>
+                        <ComboBoxItem Content="Dark" x:Name="DarkThemeItem" Selected="DarkThemeItem_Selected"/>
+                    </ComboBox>
+                    <Separator Grid.Row="4" Margin="2,4,2,4"/>
+                    <Separator Grid.Row="6" Margin="2,4,2,4"/>
+                    <ui:ToggleSwitch x:Name="StatusBarVisibility" Grid.Row="7" Margin="2,8,2,8" Content="Status Bar" Checked="StatusBarVisibility_Checked" Unchecked="StatusBarVisibility_Unchecked"/>
+                    <ui:ToggleSwitch x:Name="QuickbarVisiblity" Grid.Row="8" Margin="2,8,2,8" Content="QuickBar" Checked="QuickbarVisiblity_Checked" Unchecked="QuickbarVisiblity_Unchecked"/>
+                </VirtualizingStackPanel>
+            </ui:CardExpander>
+            <ui:CardExpander x:Name="AditionalSettingsExpander" Margin="4,4,4,4" Grid.Row="3">
+                <ui:CardExpander.Header>
+                    <StackPanel>
+                        <TextBlock Text="Advanced Settings" FontWeight="ExtraBold" FontSize="16"/>
+                        <TextBlock Text="Settings for advanced users"/>
+                    </StackPanel>
+                </ui:CardExpander.Header>
+                <VirtualizingStackPanel>
+                    <TextBlock Text="Corners" Grid.Row="5" Margin="2,4,670,0" FontSize="24" HorizontalAlignment="Left"/>
+                    <ComboBox x:Name="CornerPreferenceCombo" Text="Theme" Grid.Row="5" Margin="2,4,4,2" >
+                        <ComboBoxItem Content="Round" x:Name="RoundCornerPreference" Selected="RoundCornerPreference_Selected"/>
+                        <ComboBoxItem Content="Round Small" x:Name="RoundSmallCornerPreference" Selected="RoundSmallCornerPreference_Selected"/>
+                        <ComboBoxItem Content="Do not round" x:Name="DoNotRoundCornerPreference" Selected="DoNotRoundCornerPreference_Selected"/>
+                    </ComboBox>
+                </VirtualizingStackPanel>
+            </ui:CardExpander>
+            <ui:CardExpander x:Name="DangerSettings" Margin="4,4,4,4" Grid.Row="4">
+                <ui:CardExpander.Header>
+                    <StackPanel>
+                        <TextBlock Text="Danger Zone" FontWeight="ExtraBold" FontSize="16"/>
+                        <TextBlock Text="Only change these if you know what you are doing"/>
+                    </StackPanel>
+                </ui:CardExpander.Header>
+                <VirtualizingStackPanel>
+                    <ui:CardControl>
+                        <ui:CardControl.Header>
+                            <StackPanel>
+                                <TextBlock
+                    FontSize="13"
+                    FontWeight="Medium"
+                    Text="Settings Reset"
+                    />
+                                <TextBlock
+                    FontSize="12"
+                    Foreground="{DynamicResource TextFillColorTertiaryBrush}"
+                    Text="This will reset ALL settings to their defaults!"
+                    />
+                            </StackPanel>
+                        </ui:CardControl.Header>
+                        <ui:Button Appearance="Danger" Content="Reset" x:Name="ResetSettingsBtn" Click="ResetSettingsBtn_Click"/>
+                    </ui:CardControl>
+                </VirtualizingStackPanel>
+            </ui:CardExpander>
+            <TextBlock Text="Settings" FontSize="40" FontWeight="Bold" Grid.Row="1" Margin="4,4,4,4"/>
+            <ui:Button Content="Refresh" Appearance="Transparent" Icon="ArrowCircleDown24" x:Name="SettingsRefreshBtn" Click="SettingsRefrestBtn_Click" Grid.Row="1" Margin="165,10,0,0"/>
             <ui:Snackbar Content="Please restart the application to apply changes!" x:Name="AppRestartBar" Appearance="Secondary" Grid.Row="29" Timeout="1000"/>
         </Grid>
     </ScrollViewer>

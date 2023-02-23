@@ -30,7 +30,8 @@
                      ShowMaximize="True"
                      ShowMinimize="True"
                      UseSnapLayout="True"
-                     Background="Transparent"
+                     Background="Transparent" Icon="/NoTextLogo1.png"
+                     
                      />
         <Menu Background="Transparent" x:Name="MainMenu" Grid.Row="2" Height="51">
             <ui:MenuItem SymbolIcon="DocumentSplitHint24" Header="File">

@@ -6,12 +6,16 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <UseWindowsForms>True</UseWindowsForms>
+    <PackageIcon>TestLogo1.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="NoTextLogo1.png" />
     <None Remove="Pages\fluent-ui-microsoft.png" />
     <None Remove="Pages\TextEditor-0.6Debug-ScreenShot.png" />
     <None Remove="Pages\TextEditor-0.6Debug-ScreenShot2.png" />
+    <None Remove="TestLogo1.png" />
+    <None Remove="Windows\TestLogo1.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,9 +24,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="NoTextLogo1.png" />
     <Resource Include="Pages\fluent-ui-microsoft.png" />
     <Resource Include="Pages\TextEditor-0.6Debug-ScreenShot.png" />
     <Resource Include="Pages\TextEditor-0.6Debug-ScreenShot2.png" />
+    <Resource Include="TestLogo1.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </Resource>
+    <Resource Include="Windows\TestLogo1.png" />
   </ItemGroup>
 
 </Project>
