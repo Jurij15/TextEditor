@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using TextEditor.Functions;
 
 namespace TextEditor.Windows
 {
@@ -33,26 +36,57 @@ namespace TextEditor.Windows
             }
             MessageBox.Show("done");
         }
+
+        async Task PutTaskDelayWelcomeFirstTime()
+        {
+            await Task.Delay(2500);
+        }
+
+        async Task PutTaskDelayWelcomeBack()
+        {
+            await Task.Delay(800);
+        }
+
         public WelcomeWindow()
         {
             InitializeComponent();
-            //Thread increaseProgressThread = new Thread( new ThreadStart(IncreaseProgress));
-            Welcometimer.Interval = TimeSpan.FromSeconds(1);
-            Welcometimer.Tick += timer_tick2;
-            Welcometimer.Start();
+            Settings.GetSettings();
+            //Wpf.Ui.Appearance.Watcher.Watch(this);
+            OnStartup();
+            WelcomeProcessRing.IsIndeterminate = true;
         }
 
-        void timer_tick2(object sender, EventArgs e)
+        private async void OnStartup()
         {
-            //we will just show it for 5 secs
-            if (counter >= 3)
+            if (Globals.bShouldShowWelcomeWindow)
             {
-                counter++;
+                await PutTaskDelayWelcomeFirstTime();
+                Globals.bShouldShowWelcomeWindow = false;
+                //RestartApp();
+                this.Hide();
+                BetterMainWindow betterMainWindow = new BetterMainWindow();
+                betterMainWindow.Show();
+                betterMainWindow.ShowActivated = true;
+                betterMainWindow.ShowInTaskbar = true;
+            }
+            else if (Settings.SettingsValues.bShouldShowWelcomeBackWindow)
+            {
+                PreparingAppBlock.Text = "  Loading The Application";
+                await PutTaskDelayWelcomeBack();
+                //Settings.SettingsValues.bShouldShowWelcomeBackWindow = false;
+                this.Hide();
+                BetterMainWindow betterMainWindow = new BetterMainWindow();
+                betterMainWindow.Show();
+                betterMainWindow.ShowActivated = true;
+                betterMainWindow.ShowInTaskbar = true;
             }
             else
             {
-                Welcometimer.Stop();
-                this.Close();
+                this.Hide();
+                BetterMainWindow betterMainWindow = new BetterMainWindow();
+                betterMainWindow.Show();
+                betterMainWindow.ShowActivated = true;
+                betterMainWindow.ShowInTaskbar = true;
             }
         }
 

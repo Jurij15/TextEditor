@@ -24,7 +24,8 @@
             ShowClose="False"
             Grid.Row="1"/>
         <Image x:Name="AppIcon" Margin="40,89,454,-214" Source="/Windows/TestLogo1.png"/>
-        <TextBlock Text="Preparing the Application" FontWeight="DemiBold" FontSize="32" Margin="388,234,28,-148" Foreground="White"/>
+        <TextBlock x:Name="PreparingAppBlock" Text="Preparing the Application" FontWeight="DemiBold" FontSize="32" Margin="388,234,28,-148" Foreground="White"/>
         <ui:ProgressRing x:Name="WelcomeProcessRing" Margin="550,174,190,-102" Progress="1"/>
+        <TextBlock Text="Welcome!" FontWeight="Medium" FontSize="16" Foreground="DimGray" Margin="542,285,182,-175"/>
     </Grid>
 </ui:UiWindow>

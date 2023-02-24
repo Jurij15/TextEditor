@@ -23,6 +23,18 @@ namespace TextEditor
 
         public static bool bShouldShowWelcomeWindow = false;
 
+        public static bool IsHardwareAccelerationSupported()
+        {
+            if (Wpf.Ui.Hardware.HardwareAcceleration.IsSupported(Wpf.Ui.Hardware.RenderingTier.FullAcceleration)) 
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static int TimeSinceLastTabsLogDump = 0;// we will dump tabs state into log every 5 seconds
 
         public static void ChangeTheme()

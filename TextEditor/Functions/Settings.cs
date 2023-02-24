@@ -15,6 +15,7 @@ namespace TextEditor.Functions
             public static bool ToolbarVisibility = true; //default value (will be overwritten with the saved one)
             public static Wpf.Ui.Appearance.WindowCornerPreference CornerPreference = Wpf.Ui.Appearance.WindowCornerPreference.Round;
             public static bool StatusBarVisibility = true;
+            public static bool bShouldShowWelcomeBackWindow = false;
         }
         public static string LocalAppData = Environment.GetEnvironmentVariable("LocalAppData");
 
@@ -28,6 +29,7 @@ namespace TextEditor.Functions
         public static string AppDataToolBarVisibilityConfigFile = AppDataSavesDir + "ToolbarVisibility";
         public static string AppDataCornerPreferenceConfigFile = AppDataSavesDir + "CornerPref";
         public static string AppDataStatusBarVisibilityConfigFile = AppDataSavesDir + "StatBarVisibility";
+        public static string AppDataShowWelcomeWindowOnEveryRunConfigFile = AppDataSavesDir + "ShowWelcomWindOnEveryRun";
 
 
         public static void CreateSettings() //create the settings folder and configs
@@ -65,6 +67,12 @@ namespace TextEditor.Functions
                 sw.WriteLine(SettingsValues.StatusBarVisibility.ToString());
                 sw.Close();
             }
+
+            using (StreamWriter sw = new StreamWriter(AppDataShowWelcomeWindowOnEveryRunConfigFile))
+            {
+                sw.WriteLine(SettingsValues.bShouldShowWelcomeBackWindow.ToString());
+                sw.Close();
+            }
         }
 
         public static void GetSettings()
@@ -79,6 +87,7 @@ namespace TextEditor.Functions
                 SettingsValues.ToolbarVisibility = Convert.ToBoolean(File.ReadAllText(AppDataToolBarVisibilityConfigFile));
                 SettingsValues.StatusBarVisibility = Convert.ToBoolean(File.ReadAllText(AppDataStatusBarVisibilityConfigFile));
                 Enum.TryParse<Wpf.Ui.Appearance.WindowCornerPreference>(File.ReadAllText(AppDataCornerPreferenceConfigFile), out SettingsValues.CornerPreference);
+                SettingsValues.bShouldShowWelcomeBackWindow = Convert.ToBoolean(File.ReadAllText(AppDataShowWelcomeWindowOnEveryRunConfigFile));
             }
         }
 
@@ -110,7 +119,7 @@ namespace TextEditor.Functions
         public static void ResetSettings()
         {
             Directory.Delete(RootAppDataDir, true);
-            CreateSettings();
+            //CreateSettings();
         }
 
         public static void ChangeWindowCornerPreferenceSetting(Wpf.Ui.Appearance.WindowCornerPreference CornerPref)
@@ -146,6 +155,19 @@ namespace TextEditor.Functions
                 File.Delete(AppDataToolBarVisibilityConfigFile);
             }
             using (StreamWriter sw = new StreamWriter(AppDataToolBarVisibilityConfigFile))
+            {
+                sw.WriteLine(NewValue.ToString());
+                sw.Close();
+            }
+        }
+
+        public static void ChangeShowWelcomeWindOnEveryRunSetting(bool NewValue)
+        {
+            if (File.Exists(AppDataShowWelcomeWindowOnEveryRunConfigFile))
+            {
+                File.Delete(AppDataShowWelcomeWindowOnEveryRunConfigFile);
+            }
+            using (StreamWriter sw = new StreamWriter(AppDataShowWelcomeWindowOnEveryRunConfigFile))
             {
                 sw.WriteLine(NewValue.ToString());
                 sw.Close();

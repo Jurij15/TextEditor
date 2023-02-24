@@ -7,6 +7,7 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>True</UseWindowsForms>
     <PackageIcon>TestLogo1.png</PackageIcon>
+    <ApplicationIcon>NoTextLogo1.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,10 @@
     <None Remove="Pages\TextEditor-0.6Debug-ScreenShot2.png" />
     <None Remove="TestLogo1.png" />
     <None Remove="Windows\TestLogo1.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="NoTextLogo1.ico" />
   </ItemGroup>
 
   <ItemGroup>

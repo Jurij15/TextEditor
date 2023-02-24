@@ -36,10 +36,12 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ui:CardExpander Grid.Row="2" Margin="4,4,4,4" x:Name="BasicSettingsExpander">
+            <ui:InfoBar x:Name="HardwareAcceelerationUnsupportedBar" Title="Hardware acceleration is not enabled" Grid.Row="2" Severity="Informational" IsOpen="False" Margin="4,4,4,4" IsClosable="False" Message="Features like colour transparency and rounded corners might not work!"/>
+            <ui:InfoBar x:Name="AppRestartNeededBar" Title="App restart needed" Message="Some Settings you changed require app restart to apply" Severity="Informational" Grid.Row="2" Margin="4,4,4,4" IsClosable="False" IsOpen="False"/>
+            <ui:CardExpander Grid.Row="3" Margin="4,4,4,4" x:Name="BasicSettingsExpander" Icon="HomeMore24">
                 <ui:CardExpander.Header>
                     <StackPanel>
-                        <TextBlock Text="Basic Settings" FontWeight="ExtraBold" FontSize="16"/>
+                        <TextBlock Text="Basic Settings" FontWeight="Medium" FontSize="16"/>
                         <TextBlock Text="Quick settings to change the look and feel of the application"/>
                     </StackPanel>
                 </ui:CardExpander.Header>
@@ -55,10 +57,10 @@
                     <ui:ToggleSwitch x:Name="QuickbarVisiblity" Grid.Row="8" Margin="2,8,2,8" Content="QuickBar" Checked="QuickbarVisiblity_Checked" Unchecked="QuickbarVisiblity_Unchecked"/>
                 </VirtualizingStackPanel>
             </ui:CardExpander>
-            <ui:CardExpander x:Name="AditionalSettingsExpander" Margin="4,4,4,4" Grid.Row="3">
+            <ui:CardExpander x:Name="AditionalSettingsExpander" Margin="4,4,4,4" Grid.Row="4" Icon="MoreCircle20">
                 <ui:CardExpander.Header>
                     <StackPanel>
-                        <TextBlock Text="Advanced Settings" FontWeight="ExtraBold" FontSize="16"/>
+                        <TextBlock Text="Advanced Settings" FontWeight="Medium" FontSize="16"/>
                         <TextBlock Text="Settings for advanced users"/>
                     </StackPanel>
                 </ui:CardExpander.Header>
@@ -69,12 +71,13 @@
                         <ComboBoxItem Content="Round Small" x:Name="RoundSmallCornerPreference" Selected="RoundSmallCornerPreference_Selected"/>
                         <ComboBoxItem Content="Do not round" x:Name="DoNotRoundCornerPreference" Selected="DoNotRoundCornerPreference_Selected"/>
                     </ComboBox>
+                    <ui:ToggleSwitch x:Name="WelcomeWindowToggleSwitch" Margin="2,8,2,8" Content="Show Loading Window on every run" Checked="WelcomeWindowToggleSwitch_Checked" Unchecked="WelcomeWindowToggleSwitch_Unchecked"/>
                 </VirtualizingStackPanel>
             </ui:CardExpander>
-            <ui:CardExpander x:Name="DangerSettings" Margin="4,4,4,4" Grid.Row="4">
+            <ui:CardExpander x:Name="DangerSettings" Margin="4,4,4,4" Grid.Row="5" Icon="Warning24">
                 <ui:CardExpander.Header>
                     <StackPanel>
-                        <TextBlock Text="Danger Zone" FontWeight="ExtraBold" FontSize="16"/>
+                        <TextBlock Text="Danger Zone" FontWeight="Medium" FontSize="16"/>
                         <TextBlock Text="Only change these if you know what you are doing"/>
                     </StackPanel>
                 </ui:CardExpander.Header>
@@ -101,6 +104,19 @@
             <TextBlock Text="Settings" FontSize="40" FontWeight="Bold" Grid.Row="1" Margin="4,4,4,4"/>
             <ui:Button Content="Refresh" Appearance="Transparent" Icon="ArrowCircleDown24" x:Name="SettingsRefreshBtn" Click="SettingsRefrestBtn_Click" Grid.Row="1" Margin="165,10,0,0"/>
             <ui:Snackbar Content="Please restart the application to apply changes!" x:Name="AppRestartBar" Appearance="Secondary" Grid.Row="29" Timeout="1000"/>
+            <ui:Dialog x:Name="AppRestartDialog"
+                       ButtonLeftAppearance="Primary"
+                       ButtonLeftName="Cancel"
+                       ButtonLeftClick="AppRestartDialog_ButtonLeftClick"
+                       
+                       ButtonRightAppearance="Danger"
+                       ButtonRightName="Reset"
+                       ButtonRightClick="AppRestartDialog_ButtonRightClick" Margin="0,0,0,-27" Grid.RowSpan="23">
+                <StackPanel>
+                    <TextBlock Text="Warning" FontSize="24" FontWeight="DemiBold"/>
+                    <TextBlock Text="This will restart the application!" FontSize="16" FontWeight="Normal" Margin="2,2,2,2"/>
+                </StackPanel>
+            </ui:Dialog>
         </Grid>
     </ScrollViewer>
 </ui:UiPage>

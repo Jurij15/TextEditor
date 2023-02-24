@@ -37,7 +37,7 @@ namespace TextEditor
             return null;
         }
 
-        public static double VersionNumber = 0.6;
+        public static double VersionNumber = 0.7;
         public static string versionType = GetVersionTypeStringFromEnum(VersionTypes.Debug);
 
         public static string VersionString = VersionNumber.ToString() + "-" + versionType.ToString();

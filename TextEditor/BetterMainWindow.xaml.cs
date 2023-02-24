@@ -29,6 +29,9 @@ using TextEditor.Windows;
 using TextEditor.Functions;
 using System.Configuration;
 using System.Threading;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.Windows.Controls.Primitives;
 
 namespace TextEditor
 {
@@ -54,42 +57,23 @@ namespace TextEditor
         #region Functions
 
         #region TestingWelcome
-        int WelcomeTimeCounter = 0;
-        bool bIsWelcomwVivible = false;
-        DispatcherTimer Welcometimer = new DispatcherTimer();
         void ShowWelcome()
         {
             WelcomeWindow welcomeWindow = new WelcomeWindow();
             welcomeWindow.Show();
-        }
-
-        void ShowWelcomForTime()
-        {
-            Welcometimer.Interval = TimeSpan.FromSeconds(1);
-            Welcometimer.Tick += timer_tick2;
-            Welcometimer.Start();
-            WelcomeWindow welcomeWindow = new WelcomeWindow();
-            welcomeWindow.Close();
-        }
-        void timer_tick2(object sender, EventArgs e)
-        {
-            //we will just show it for 5 secs
-            if (WelcomeTimeCounter <= 3)
+            int counter = 0;
+            while (counter <= 5000000)
             {
-                if (!bIsWelcomwVivible)
+                counter++;
+                this.Hide();
+                if (counter == 5000000)
                 {
-                    ShowWelcome();
-                    this.Hide();
-                    bIsWelcomwVivible=true;
+                    //MessageBox.Show("Done");
+                    MessageBox.Show(counter.ToString());
+                    welcomeWindow.Close();
+                    this.Show();
+                    break;
                 }
-            }
-            else
-            {
-                Welcometimer.Stop();
-                MessageBox.Show("Stopping timer");
-                WelcomeWindow w = new WelcomeWindow();
-                w.Close();
-                this.Show();
             }
         }
         #endregion
@@ -99,10 +83,8 @@ namespace TextEditor
             Settings.GetSettings();
             if (Globals.bShouldShowWelcomeWindow)
             {
-                //I NEED TO FIX THIS ASAP
-                //this.Hide();
                 //ShowWelcome();
-                //this.Show();
+                Globals.bShouldShowWelcomeWindow = false;
             }
             if (Settings.SettingsValues.Theme == "DARK")
             {
@@ -148,6 +130,7 @@ namespace TextEditor
                 {
                     LinesAndCharsStatusBarBlock.Text = string.Empty;
                     MainWindowStatusBar.Visibility = Visibility.Collapsed;
+                    MainWindowStatusBar.IsEnabled = true;
                     return;
                 }
 
@@ -158,7 +141,7 @@ namespace TextEditor
 
                 string[] splittedLines = MyText.Text.Split(new[] { Environment.NewLine }
                                               , StringSplitOptions.None); // or StringSplitOptions.RemoveEmptyEntries
-                int Alllines = splittedLines.Length;
+                int Alllines = splittedLines.Length -2;
 
                 TextPointer caretLineStart = GetCurrentlySelectedTabTextBox().CaretPosition.GetLineStartPosition(0);
                 TextPointer p = GetCurrentlySelectedTabTextBox().Document.ContentStart.GetLineStartPosition(0);
@@ -200,6 +183,7 @@ namespace TextEditor
             {
                 LinesAndCharsStatusBarBlock.Text = string.Empty;
                 MainWindowStatusBar.Visibility = Visibility.Collapsed;
+                MainWindowStatusBar.IsEnabled = false;
             }
         }
         #endregion
@@ -220,7 +204,7 @@ namespace TextEditor
 
             //start the timer
             DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Interval = TimeSpan.FromMilliseconds(500);
             timer.Tick += timer_tick;
             timer.Start();
 
@@ -257,30 +241,8 @@ namespace TextEditor
             Globals.RunningTimeInSeconds++;
             Globals.CurrentDateTime = DateTime.Now;
 
-            //PosTextBox.Text = GetCurrentlySelectedTabTextBox().Document.ContentStart.GetOffsetToPosition(GetCurrentlySelectedTabTextBox().CaretPosition).ToString(); not sure what i did here
 
-            if (Config.bLog)
-            {
-                if (Globals.TimeSinceLastTabsLogDump >= 5)
-                {
-                    Logger.Log("DUMPING TABS STATE:");
-                    Logger.Log("    Currently opened tabs: " + Config.TabsCount);
-                    if (GetCurrentlySelectedTab() == null)
-                    {
-                        Logger.Log("    No opened Tabs! ");
-                    }
-                    else
-                    {
-                        Logger.Log("    Currently selected tab header: " + GetCurrentlySelectedTab().Header);
-                        Logger.Log("    Currently selected tab Guid: " + GetCurrentlySelectedTabGuid());
-                    }
-                    Logger.Log("DUMPED TABS STATE!");
-                    Globals.TimeSinceLastTabsLogDump = 0;
-                }
-                else { Globals.TimeSinceLastTabsLogDump++; }
-            }
-
-            ApplySettings();
+            UpdateStatus();
         }
 
         private void ThemeMainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -375,6 +337,8 @@ namespace TextEditor
         private void InstanceManagerMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             Logger.Log("Opened instance manager window");
+            InstanceManagerWindow im = new InstanceManagerWindow();
+            im.Show();
         }
 
         private void ExitMainMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -386,6 +350,8 @@ namespace TextEditor
         private void StatisticsMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             Logger.Log("Opened statistics window");
+            StatisticsWindow stat = new StatisticsWindow();
+            stat.Show();
         }
 
         private void AboutMenuBtn_Click(object sender, RoutedEventArgs e)
@@ -398,7 +364,7 @@ namespace TextEditor
         private void NewWindowMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
             Logger.Log("Opened a new window by " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name);
-            MainWindow window = new MainWindow();
+            BetterMainWindow window = new BetterMainWindow();
             window.Owner = null;
             window.Show();
         }
@@ -587,8 +553,6 @@ namespace TextEditor
         {
             LoggerWindow window = new LoggerWindow();
             //window.Show();
-            WelcomeWindow welcome = new WelcomeWindow();
-            welcome.ShowDialog();
         }
 
 
@@ -599,22 +563,29 @@ namespace TextEditor
 
         private void FindMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            CakeLieDialog.ShowAndWaitAsync();
+            //CakeLieDialog.ShowAndWaitAsync();
+            FindDialog.ShowAndWaitAsync();
         }
 
         private void GoToMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            CakeLieDialog.ShowAndWaitAsync();
+            //CakeLieDialog.ShowAndWaitAsync();
         }
 
         private void ReplaceMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            CakeLieDialog.ShowAndWaitAsync();
+            //CakeLieDialog.ShowAndWaitAsync();
         }
 
         private void SearchWebMenuBtn_Click(object sender, RoutedEventArgs e)
         {
-            CakeLieDialog.ShowAndWaitAsync();
+            //CakeLieDialog.ShowAndWaitAsync();
+            string selection = GetCurrentlySelectedTabTextBox().Selection.Text.ToString();
+            if (string.IsNullOrEmpty(selection))
+            {
+                return;
+            }
+            Process.Start(new ProcessStartInfo("https://www.google.com/search?q="+selection) { UseShellExecute = true });
         }
 
         private void RTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -625,6 +596,10 @@ namespace TextEditor
 
         private void ControlTabs_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (ControlTabs.Items.Count == 0)
+            {
+                AddTabBtn_Click(null, null);
+            }
             if (GetCurrentlySelectedTab() == null)
             {
                 return;
@@ -649,17 +624,19 @@ namespace TextEditor
             if (GetCurrentlySelectedTabName() == "AboutTab")
             {
                 ControlTabs.Background = Brushes.Transparent;
+                MainWindowStatusBar.Visibility = Visibility.Collapsed;
             }
             else if (GetCurrentlySelectedTabName() == "SettingsTab")
             {
                 ControlTabs.Background = Brushes.Transparent;
+                MainWindowStatusBar.Visibility = Visibility.Collapsed;
             }
             else
             {
                 //ControlTabs.Background = Brushes.Transparent;
                 ControlTabs.ClearValue(TabControl.BackgroundProperty);
+                MainWindowStatusBar.Visibility = Visibility.Visible;
             }
-
         }
         #endregion
 
@@ -893,6 +870,66 @@ namespace TextEditor
         private void TimeBtn_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void UiWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void FindDialog_ButtonLeftClick(object sender, RoutedEventArgs e)
+        {
+            FindDialog.Hide();
+        }
+
+        private void FindDialog_ButtonRightClick(object sender, RoutedEventArgs e)
+        {
+            FindDialog.Hide();
+            TextRange tr = new TextRange(GetCurrentlySelectedTabTextBox().Document.ContentStart, GetCurrentlySelectedTabTextBoxOLD().Document.ContentEnd);
+            string text = tr.Text;
+            string searchText = FindTextBox.Text;
+            if (string.IsNullOrEmpty(searchText)) { return; }
+
+            Regex regex = new Regex(searchText);
+            int count_MatchFound = Regex.Matches(text, regex.ToString()).Count;
+
+            for (TextPointer startPointer = GetCurrentlySelectedTabTextBox().Document.ContentStart;
+                        startPointer.CompareTo(GetCurrentlySelectedTabTextBox().Document.ContentEnd) <= 0;
+                            startPointer = startPointer.GetNextContextPosition(LogicalDirection.Forward))
+            {
+                //check if end of text
+                if (startPointer.CompareTo(GetCurrentlySelectedTabTextBox().Document.ContentEnd) == 0)
+                {
+                    break;
+                }
+
+                //get the adjacent string
+                string parsedString = startPointer.GetTextInRun(LogicalDirection.Forward);
+
+                //check if the search string present here
+                int indexOfParseString = parsedString.IndexOf(searchText);
+
+                if (indexOfParseString >= 0) //present
+                {
+                    //setting up the pointer here at this matched index
+                    startPointer = startPointer.GetPositionAtOffset(indexOfParseString);
+
+                    if (startPointer != null)
+                    {
+                        //next pointer will be the length of the search string
+                        TextPointer nextPointer = startPointer.GetPositionAtOffset(searchText.Length);
+
+                        //create the text range
+                        TextRange searchedTextRange = new TextRange(startPointer, nextPointer);
+
+                        //color up 
+                        searchedTextRange.ApplyPropertyValue(TextElement.BackgroundProperty, new SolidColorBrush(Colors.Yellow));
+
+                        //add other setting property
+
+                    }
+                }
+            }
         }
     }
 }

@@ -48,6 +48,7 @@ namespace TextEditor.Pages
 
             StatusBarVisibility.IsChecked = Settings.SettingsValues.StatusBarVisibility;
             QuickbarVisiblity.IsChecked = Settings.SettingsValues.ToolbarVisibility;
+            WelcomeWindowToggleSwitch.IsChecked = Settings.SettingsValues.bShouldShowWelcomeBackWindow;
 
             bIsInitialized= true; //this prevents changing app theme while its loading
         }
@@ -55,6 +56,10 @@ namespace TextEditor.Pages
         {
             InitializeComponent();
             InitSettingsValues();
+            if (!Globals.IsHardwareAccelerationSupported())
+            {
+                HardwareAcceelerationUnsupportedBar.IsOpen = true;
+            }
         }
 
         private void LightThemeItem_Selected(object sender, RoutedEventArgs e)
@@ -122,7 +127,7 @@ namespace TextEditor.Pages
                 return;
             }
             Settings.ChangeStatusBarVisuiblitySetting(true);
-            //AppRestartBar.ShowAsync();
+            AppRestartNeededBar.IsOpen = true;
         }
 
         private void StatusBarVisibility_Unchecked(object sender, RoutedEventArgs e)
@@ -132,7 +137,7 @@ namespace TextEditor.Pages
                 return;
             }
             Settings.ChangeStatusBarVisuiblitySetting(false);
-            //AppRestartBar.ShowAsync();
+            AppRestartNeededBar.IsOpen = true;
         }
 
         private void QuickbarVisiblity_Checked(object sender, RoutedEventArgs e)
@@ -142,7 +147,7 @@ namespace TextEditor.Pages
                 return;
             }
             Settings.ChangeToolBarVisuiblitySetting(true);
-            //AppRestartBar.ShowAsync();
+            AppRestartNeededBar.IsOpen = true;
         }
 
         private void QuickbarVisiblity_Unchecked(object sender, RoutedEventArgs e)
@@ -152,12 +157,41 @@ namespace TextEditor.Pages
                 return;
             }
             Settings.ChangeToolBarVisuiblitySetting(false);
-            //AppRestartBar.ShowAsync();
+            AppRestartNeededBar.IsOpen = true;
         }
 
         private void ResetSettingsBtn_Click(object sender, RoutedEventArgs e)
         {
+            AppRestartDialog.ShowAndWaitAsync();
+        }
 
+        private void AppRestartDialog_ButtonLeftClick(object sender, RoutedEventArgs e)
+        {
+            AppRestartDialog.Hide();
+        }
+
+        private void AppRestartDialog_ButtonRightClick(object sender, RoutedEventArgs e)
+        {
+            Settings.ResetSettings();
+            Helper.RestartApp();
+        }
+
+        private void WelcomeWindowToggleSwitch_Checked(object sender, RoutedEventArgs e)
+        {
+            if (!bIsInitialized)
+            {
+                return;
+            }
+            Settings.ChangeShowWelcomeWindOnEveryRunSetting(true);
+        }
+
+        private void WelcomeWindowToggleSwitch_Unchecked(object sender, RoutedEventArgs e)
+        {
+            if (!bIsInitialized)
+            {
+                return;
+            }
+            Settings.ChangeShowWelcomeWindOnEveryRunSetting(false);
         }
     }
 }

@@ -12,6 +12,7 @@
              WindowStartupLocation="CenterScreen"
                               WindowBackdropType="Mica"
                  WindowCornerPreference="Round"
+             Closing="UiWindow_Closing"
              >
     <Grid x:Name="DPanel">
         <Grid.RowDefinitions>
@@ -41,9 +42,9 @@
                 <MenuItem Header="Save" x:Name="SaveMainMenuBtn" Click="SaveMainMenuBtn_Click"/>
                 <Separator/>
                 <MenuItem Header="File Templates" x:Name="FileTemplatesMainMenuBtn">
-                    <MenuItem Header="HTML File"/>
-                    <MenuItem Header="C# File"/>
-                    <MenuItem Header="C++ File"/>
+                    <MenuItem Header="HTML Source File"/>
+                    <MenuItem Header="C# Source File"/>
+                    <MenuItem Header="C++ Source File"/>
                 </MenuItem>
                 <Separator/>
                 <MenuItem Header="Preferences" x:Name="PreferencesMainMenuBtn" Click="PreferencesMainMenuBtn_Click"/>
@@ -145,6 +146,11 @@
         <ui:Dialog x:Name="CakeLieDialog" ButtonLeftAppearance="Primary" ButtonRightVisibility="Collapsed" ButtonLeftName="Close" ButtonLeftClick="CakeLieDialog_ButtonLeftClick" Grid.Row="5">
             <StackPanel>
                 <TextBlock Text="The Cake is a Lie"/>
+            </StackPanel>
+        </ui:Dialog>
+        <ui:Dialog x:Name="FindDialog" ButtonLeftAppearance="Secondary" ButtonRightVisibility="Visible" ButtonLeftName="Close" ButtonLeftClick="FindDialog_ButtonLeftClick" ButtonRightAppearance="Primary" ButtonRightName="Search" ButtonRightClick="FindDialog_ButtonRightClick" Grid.Row="5">
+            <StackPanel>
+                <ui:TextBox PlaceholderEnabled="True" PlaceholderText="Find" x:Name="FindTextBox"/>
             </StackPanel>
         </ui:Dialog>
     </Grid>
