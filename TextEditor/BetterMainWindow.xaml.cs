@@ -261,10 +261,12 @@ namespace TextEditor
                 if (Globals.TS.GetTheme() == Wpf.Ui.Appearance.ThemeType.Light)
                 {
                     GetCurrentlySelectedTabTextBox().Foreground = Brushes.Black;
+                    GetCurrentlySelectedTabTextBox().CaretBrush = Brushes.Black;
                 }
                 else if (Globals.TS.GetTheme() == Wpf.Ui.Appearance.ThemeType.Dark)
                 {
                     GetCurrentlySelectedTabTextBox().Foreground = Brushes.White;
+                    GetCurrentlySelectedTabTextBox().CaretBrush = Brushes.White;
                 }
             }
 
@@ -780,6 +782,8 @@ namespace TextEditor
             TabItem tab = new TabItem();
             tab.Header = "New Tab";
 
+            Wpf.Ui.Animations.Transitions.ApplyTransition(tab, Wpf.Ui.Animations.TransitionType.FadeIn, 150);
+
             var guid = Guid.NewGuid().ToString();
             string name = guid.Replace("-", "_");
             tab.Name = "TAB" + name;
@@ -811,6 +815,9 @@ namespace TextEditor
             Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
             Config.TabsCount++;
             TabItem tab = new TabItem();
+
+            Wpf.Ui.Animations.Transitions.ApplyTransition(tab, Wpf.Ui.Animations.TransitionType.FadeIn, 150);
+
             //set the tab header based on the page enum
             switch (SelectedPage)
             {
