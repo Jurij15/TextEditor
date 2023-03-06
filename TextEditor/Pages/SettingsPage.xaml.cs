@@ -60,6 +60,12 @@ namespace TextEditor.Pages
             {
                 HardwareAcceelerationUnsupportedBar.IsOpen = true;
             }
+
+            if (!Globals.bIsWindows11())
+            {
+                Windows11NotInstalled.IsOpen = true;
+                CornerPreferenceCombo.IsEnabled = false;
+            }
         }
 
         private void LightThemeItem_Selected(object sender, RoutedEventArgs e)

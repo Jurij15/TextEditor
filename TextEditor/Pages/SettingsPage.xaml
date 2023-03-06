@@ -35,10 +35,16 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <ui:InfoBar x:Name="HardwareAcceelerationUnsupportedBar" Title="Hardware acceleration is not enabled" Grid.Row="2" Severity="Informational" IsOpen="False" Margin="4,4,4,4" IsClosable="False" Message="Features like colour transparency and rounded corners might not work!"/>
-            <ui:InfoBar x:Name="AppRestartNeededBar" Title="App restart needed" Message="Some Settings you changed require app restart to apply" Severity="Informational" Grid.Row="2" Margin="4,4,4,4" IsClosable="False" IsOpen="False"/>
-            <ui:CardExpander Grid.Row="3" Margin="4,4,4,4" x:Name="BasicSettingsExpander" Icon="HomeMore24">
+            <ui:InfoBar x:Name="HardwareAcceelerationUnsupportedBar" Title="Hardware acceleration is not enabled" Grid.Row="2" Severity="Informational" IsOpen="False" Margin="4,4,4,4" IsClosable="False" Message="Effects like translucency will be disabled!"/>
+            <ui:InfoBar x:Name="AppRestartNeededBar" Title="App restart needed" Message="Some Settings you changed require app restart to apply" Severity="Informational" Grid.Row="3" Margin="4,4,4,4" IsClosable="False" IsOpen="False"/>
+            <ui:InfoBar x:Name="Windows11NotInstalled" Title="OS is not Windows 11" Message="Window translucency effects and rounded corners will not work!" Grid.Row="4" Severity="Informational" Margin="4,4,4,4" IsClosable="False" IsOpen="False"/>
+            <ui:CardExpander Grid.Row="7" Margin="4,4,4,4" x:Name="BasicSettingsExpander" Icon="HomeMore24">
                 <ui:CardExpander.Header>
                     <StackPanel>
                         <TextBlock Text="Basic Settings" FontWeight="Medium" FontSize="16"/>
@@ -46,18 +52,28 @@
                     </StackPanel>
                 </ui:CardExpander.Header>
                 <VirtualizingStackPanel>
-                    <TextBlock Text="Theme" Grid.Row="3" Margin="2,4,670,0" FontSize="24" HorizontalAlignment="Left"/>
-                    <ComboBox x:Name="ThemeCombo" Text="Theme" Grid.Row="3" Margin="2,4,0,0">
-                        <ComboBoxItem Content="Light" x:Name="LightThemeItem" Selected="LightThemeItem_Selected"/>
-                        <ComboBoxItem Content="Dark" x:Name="DarkThemeItem" Selected="DarkThemeItem_Selected"/>
-                    </ComboBox>
-                    <Separator Grid.Row="4" Margin="2,4,2,4"/>
+                    <ui:CardControl>
+                        <ui:CardControl.Header>
+                            <StackPanel>
+                                <TextBlock
+                                    Text="Theme"
+                                    FontWeight="DemiBold" FontSize="14"/>
+                                <TextBlock
+                                    Text="Change the application theme"
+                                    FontWeight="Medium"/>
+                            </StackPanel>
+                        </ui:CardControl.Header>
+                        <ComboBox x:Name="ThemeCombo" Text="Theme" Grid.Row="3" Margin="2,4,0,0">
+                            <ComboBoxItem Content="Light" x:Name="LightThemeItem" Selected="LightThemeItem_Selected"/>
+                            <ComboBoxItem Content="Dark" x:Name="DarkThemeItem" Selected="DarkThemeItem_Selected"/>
+                        </ComboBox>
+                    </ui:CardControl>
                     <Separator Grid.Row="6" Margin="2,4,2,4"/>
-                    <ui:ToggleSwitch x:Name="StatusBarVisibility" Grid.Row="7" Margin="2,8,2,8" Content="Status Bar" Checked="StatusBarVisibility_Checked" Unchecked="StatusBarVisibility_Unchecked"/>
-                    <ui:ToggleSwitch x:Name="QuickbarVisiblity" Grid.Row="8" Margin="2,8,2,8" Content="QuickBar" Checked="QuickbarVisiblity_Checked" Unchecked="QuickbarVisiblity_Unchecked"/>
+                    <ui:ToggleSwitch x:Name="StatusBarVisibility" Grid.Row="7" Margin="2,8,9,8" Content="Status Bar" Checked="StatusBarVisibility_Checked" Unchecked="StatusBarVisibility_Unchecked"/>
+                    <ui:ToggleSwitch x:Name="QuickbarVisiblity" Grid.Row="8" Margin="2,8,9,8" Content="QuickBar" Checked="QuickbarVisiblity_Checked" Unchecked="QuickbarVisiblity_Unchecked"/>
                 </VirtualizingStackPanel>
             </ui:CardExpander>
-            <ui:CardExpander x:Name="AditionalSettingsExpander" Margin="4,4,4,4" Grid.Row="4" Icon="MoreCircle20">
+            <ui:CardExpander x:Name="AditionalSettingsExpander" Margin="4,4,4,4" Grid.Row="8" Icon="MoreCircle20">
                 <ui:CardExpander.Header>
                     <StackPanel>
                         <TextBlock Text="Advanced Settings" FontWeight="Medium" FontSize="16"/>
@@ -65,16 +81,23 @@
                     </StackPanel>
                 </ui:CardExpander.Header>
                 <VirtualizingStackPanel>
-                    <TextBlock Text="Corners" Grid.Row="5" Margin="2,4,670,0" FontSize="24" HorizontalAlignment="Left"/>
-                    <ComboBox x:Name="CornerPreferenceCombo" Text="Theme" Grid.Row="5" Margin="2,4,4,2" >
-                        <ComboBoxItem Content="Round" x:Name="RoundCornerPreference" Selected="RoundCornerPreference_Selected"/>
-                        <ComboBoxItem Content="Round Small" x:Name="RoundSmallCornerPreference" Selected="RoundSmallCornerPreference_Selected"/>
-                        <ComboBoxItem Content="Do not round" x:Name="DoNotRoundCornerPreference" Selected="DoNotRoundCornerPreference_Selected"/>
-                    </ComboBox>
+                    <ui:CardControl>
+                        <ui:CardControl.Header>
+                            <StackPanel>
+                                <TextBlock Text="Corners" Grid.Row="5" FontSize="14" HorizontalAlignment="Left" FontWeight="DemiBold"/>
+                                <TextBlock Text="Change window corners" FontWeight="Medium"/>
+                            </StackPanel>
+                        </ui:CardControl.Header>
+                        <ComboBox x:Name="CornerPreferenceCombo" Text="Theme" Grid.Row="7" Margin="2,4,4,2" >
+                            <ComboBoxItem Content="Round" x:Name="RoundCornerPreference" Selected="RoundCornerPreference_Selected"/>
+                            <ComboBoxItem Content="Round Small" x:Name="RoundSmallCornerPreference" Selected="RoundSmallCornerPreference_Selected"/>
+                            <ComboBoxItem Content="Do not round" x:Name="DoNotRoundCornerPreference" Selected="DoNotRoundCornerPreference_Selected"/>
+                        </ComboBox>
+                    </ui:CardControl>
                     <ui:ToggleSwitch x:Name="WelcomeWindowToggleSwitch" Margin="2,8,2,8" Content="Show Loading Window on every run" Checked="WelcomeWindowToggleSwitch_Checked" Unchecked="WelcomeWindowToggleSwitch_Unchecked"/>
                 </VirtualizingStackPanel>
             </ui:CardExpander>
-            <ui:CardExpander x:Name="DangerSettings" Margin="4,4,4,4" Grid.Row="5" Icon="Warning24">
+            <ui:CardExpander x:Name="DangerSettings" Margin="4,4,4,4" Grid.Row="9" Icon="Warning24">
                 <ui:CardExpander.Header>
                     <StackPanel>
                         <TextBlock Text="Danger Zone" FontWeight="Medium" FontSize="16"/>

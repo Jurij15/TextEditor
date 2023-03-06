@@ -314,6 +314,10 @@ namespace TextEditor
 
         private void SaveMainMenuBtn_Click(object sender, RoutedEventArgs e)
         {
+            if (GetCurrentlySelectedTabTextBox() == null)
+            {
+                return;
+            }
             Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
             saveFileDialog.Filter = "Text File (*.txt)|*.txt|Show All Files (*.*)|*.*";
             saveFileDialog.FileName = "Untitled";

@@ -50,5 +50,15 @@ namespace TextEditor
             }
             Settings.SwitchThemeSetting();
         }
+
+        public static bool bIsWindows11()
+        {
+            OperatingSystem os = Environment.OSVersion;
+            if (os.Version.Build >= 22000)
+            {
+                return true;
+            }
+            else { return false; }
+        }
     }
 }
