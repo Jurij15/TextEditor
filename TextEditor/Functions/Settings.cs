@@ -12,7 +12,7 @@ namespace TextEditor.Functions
         public static class SettingsValues
         {
             public static string Theme = "DARK"; //default value (will be overwritten with the saved one) ((MAKE SURE ITS IN ALL CAPS!!!))
-            public static bool ToolbarVisibility = true; //default value (will be overwritten with the saved one)
+            public static bool ToolbarVisibility = false; //default value (will be overwritten with the saved one)
             public static Wpf.Ui.Appearance.WindowCornerPreference CornerPreference = Wpf.Ui.Appearance.WindowCornerPreference.Round;
             public static bool StatusBarVisibility = true;
             public static bool bShouldShowWelcomeBackWindow = false;

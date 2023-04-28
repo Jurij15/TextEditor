@@ -34,8 +34,9 @@
                      Background="Transparent" Icon="/NoTextLogo1.png"
                      
                      />
+        <ui:AutoSuggestBox Grid.Row="2" Margin="0,-100,0,0" MaxWidth="350" PlaceholderEnabled="True" PlaceholderText="Search"/>
         <Menu Background="Transparent" x:Name="MainMenu" Grid.Row="2" Height="51">
-            <ui:MenuItem SymbolIcon="DocumentSplitHint24" Header="File">
+            <ui:MenuItem SymbolIcon="DocumentSplitHint24" Header="File" HorizontalAlignment="Left">
                 <MenuItem Header="New" x:Name="NewMainMenuBtn" Click="NewMainMenuBtn_Click"/>
                 <MenuItem Header="New Window" x:Name="NewWindowMainMenuBtn" Click="NewWindowMainMenuBtn_Click"/>
                 <MenuItem Header="Open" x:Name="OpenMainMenuBtn" Click="OpenMainMenuBtn_Click"/>
@@ -53,7 +54,7 @@
                 <Separator/>
                 <MenuItem Header="Exit" x:Name="ExitMainMenuBtn" Click="ExitMainMenuBtn_Click"/>
             </ui:MenuItem>
-            <ui:MenuItem SymbolIcon="ScanText24" Header="Edit">
+            <ui:MenuItem SymbolIcon="ScanText24" Header="Edit" HorizontalAlignment="Left">
                 <ui:MenuItem Header="Undo" x:Name="UndoMenuBtn" Click="UndoMenuBtn_Click"/>
                 <ui:MenuItem Header="Redo" x:Name="RedoMenuBtn" Click="RedoMenuBtn_Click"/>
                 <ui:MenuItem Header="Cut" x:Name="CutMenuBtn" Click="CutMenuBtn_Click"/>
@@ -68,28 +69,28 @@
                 <ui:MenuItem Header="SelectAll" x:Name="SelectAllMenuBtn" Click="SelectAllMenuBtn_Click"/>
                 <ui:MenuItem Header="Date/Time" x:Name="DateTimeMenuBTn" Click="DateTimeMenuBTn_Click"/>
             </ui:MenuItem>
-            <ui:MenuItem Header="Style" SymbolIcon="StyleGuide24">
+            <ui:MenuItem Header="Style" SymbolIcon="StyleGuide24" HorizontalAlignment="Left">
                 <ui:MenuItem Header="Bold" SymbolIcon="TextBold24" x:Name="BoldMenuButton" Click="BoldMenuButton_Click"/>
                 <ui:MenuItem Header="Italic" SymbolIcon="TextItalic24" x:Name="ItalicMenuButton" Click="ItalicMenuButton_Click"/>
                 <ui:MenuItem Header="Underline" SymbolIcon="TextUnderline24" x:Name="UnderlineMenuButton" Click="UnderlineMenuButton_Click"/>
                 <CheckBox Content="Word Wrap" x:Name="WordWrapCheckBox" Checked="WordWrapCheckBox_Checked" Unchecked="WordWrapCheckBox_Unchecked"/>
             </ui:MenuItem>
-            <ui:MenuItem SymbolIcon="TableAdd24" Header="Tabs">
+            <ui:MenuItem SymbolIcon="TableAdd24" Header="Tabs" HorizontalAlignment="Left">
                 <MenuItem Header="Add Tab" x:Name="AddTabBtn" Click="AddTabBtn_Click"/>
                 <MenuItem Header="Close Tab" x:Name="CloseTabBtn" Click="CloseTabBtn_Click"/>
             </ui:MenuItem>
-            <ui:MenuItem Header="Format" SymbolIcon="TextNumberFormat24">
+            <ui:MenuItem Header="Format" SymbolIcon="TextNumberFormat24" HorizontalAlignment="Left">
                 <MenuItem Header="Font" x:Name="FontMenuBtn" Click="FontMenuBtn_Click"/>
                 <MenuItem Header="Color" x:Name="ColorMenuBtn" Click="ColorMenuBtn_Click"/>
             </ui:MenuItem>
-            <ui:MenuItem SymbolIcon="ContactCard24" Header="About">
+            <ui:MenuItem SymbolIcon="ContactCard24" Header="About" HorizontalAlignment="Left">
                 <MenuItem Header="Logger" x:Name="LoggerMenuBtn" Click="LoggerMenuBtn_Click"/>
                 <Separator x:Name="LoggerSeperatorONLYONDEBUG"/>
                 <MenuItem Header="Updater" x:Name="UpdaterMenuBtn" Click="UpdaterMenuBtn_Click"/>
                 <MenuItem Header="About TextEditor" x:Name="AboutMenuBtn" Click="AboutMenuBtn_Click"/>
             </ui:MenuItem>
-            <Button Content="TimeHere" x:Name="TimeBtn" HorizontalAlignment="Center" FontSize="12" Height="37" Click="TimeBtn_Click"/>
-            <ui:Button Content="" Icon="DarkTheme24" x:Name="ThemeMainMenuBtn" Click="ThemeMainMenuBtn_Click" HorizontalAlignment="Center" FontSize="12" Height="37"/>
+            <Button Content="TimeHere" x:Name="TimeBtn" HorizontalAlignment="Left" FontSize="12" Height="37" Click="TimeBtn_Click"/>
+            <ui:Button Content="" Icon="DarkTheme24" x:Name="ThemeMainMenuBtn" Click="ThemeMainMenuBtn_Click" HorizontalAlignment="Left" FontSize="12" Height="37"/>
         </Menu>
         <Separator Grid.Row="3"/>
         <Menu Background="Transparent" x:Name="QuickBarTray" Grid.Row="4">
@@ -112,6 +113,13 @@
         <TabControl x:Name="ControlTabs" Grid.Row="5" SelectionChanged="ControlTabs_SelectionChanged">
             <TabItem Header="DefaultTab" x:Name="DefaultTab">
                 <RichTextBox x:Name="DefTextBox"/>
+            </TabItem>
+            <TabItem MaxWidth="34" x:Name="AddTabTab" Focusable="False" IsTabStop="True" Visibility="Collapsed">
+                <TabItem.Header>
+                    <Button x:Name="AddTab" Click="AddTab_Click">
+                        <ui:SymbolIcon Symbol="Add24"/>
+                    </Button>
+                </TabItem.Header>
             </TabItem>
         </TabControl>
         <StatusBar x:Name="MainWindowStatusBar" Grid.Row="6" Background="Transparent">

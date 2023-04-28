@@ -47,7 +47,7 @@
             <ui:CardExpander Grid.Row="7" Margin="4,4,4,4" x:Name="BasicSettingsExpander" Icon="HomeMore24">
                 <ui:CardExpander.Header>
                     <StackPanel>
-                        <TextBlock Text="Basic Settings" FontWeight="Medium" FontSize="16"/>
+                        <TextBlock Text="Basic Settings" FontWeight="Medium" FontSize="14"/>
                         <TextBlock Text="Quick settings to change the look and feel of the application"/>
                     </StackPanel>
                 </ui:CardExpander.Header>
@@ -76,7 +76,7 @@
             <ui:CardExpander x:Name="AditionalSettingsExpander" Margin="4,4,4,4" Grid.Row="8" Icon="MoreCircle20">
                 <ui:CardExpander.Header>
                     <StackPanel>
-                        <TextBlock Text="Advanced Settings" FontWeight="Medium" FontSize="16"/>
+                        <TextBlock Text="Advanced Settings" FontWeight="Medium" FontSize="14"/>
                         <TextBlock Text="Settings for advanced users"/>
                     </StackPanel>
                 </ui:CardExpander.Header>
@@ -100,7 +100,7 @@
             <ui:CardExpander x:Name="DangerSettings" Margin="4,4,4,4" Grid.Row="9" Icon="Warning24">
                 <ui:CardExpander.Header>
                     <StackPanel>
-                        <TextBlock Text="Danger Zone" FontWeight="Medium" FontSize="16"/>
+                        <TextBlock Text="Danger Zone" FontWeight="Medium" FontSize="14"/>
                         <TextBlock Text="Only change these if you know what you are doing"/>
                     </StackPanel>
                 </ui:CardExpander.Header>

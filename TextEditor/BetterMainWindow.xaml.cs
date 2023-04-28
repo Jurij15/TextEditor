@@ -32,6 +32,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows.Controls.Primitives;
+using System.Runtime.InteropServices;
 
 namespace TextEditor
 {
@@ -231,6 +232,8 @@ namespace TextEditor
             //Wpf.Ui.Extensions.WindowExtensions.ApplyDefaultBackground(this);
             //Settings.ResetSettings();
             #endregion
+
+
         }
 
         #region Event Handlers
@@ -808,7 +811,8 @@ namespace TextEditor
             RegisterName(rtextbox.Name, rtextbox);
             tab.Content = rtextbox;
             //ControlTabs.Items.Insert(1, tab);
-            ControlTabs.Items.Add(tab);
+            ControlTabs.Items.Insert(1, tab);
+            ControlTabs.SelectedItem = tab;
             //Dispatcher.BeginInvoke((Action)(() => ControlTabs.SelectedIndex = Config.TabsCount));
             Logger.Log("Added a new tab with GUID: " + guid);
             ControlTabs.SelectedItem = tab;
@@ -941,6 +945,13 @@ namespace TextEditor
                     }
                 }
             }
+        }
+
+        private void AddTab_Click(object sender, RoutedEventArgs e)
+        {
+            AddNewTab();
+            AddTabTab.IsSelected = false;
+            AddTabTab.Focusable = false;
         }
     }
 }
